@@ -122,14 +122,15 @@ export default {
           //POST請求
           axios
             .post(url + "/Accountm/Login", {
-              acm_logonaccount: this.account,
-              acm_password: encryptByCBC(this.password),
+              accountid: this.account,
+              accpassword: encryptByCBC(this.password),
               // acm_password: Encrypt(this.password),
             })
             .then((response) => {
               this.loading = false;
               if (response.data.isSuccess == true) {
-                this.loggedUser = response.data.Data[0].acm_username;
+                
+                this.loggedUser = response.data.Data[0].accountname;
                 sessionStorage.setItem(
                   "userInfo",
                   JSON.stringify(response.data.Data[0])
@@ -194,8 +195,9 @@ export default {
 html,
 body {
   position: relative;
-  min-height: 100vh;
-  background-color: #e1e8ee;
+  /* min-height: 100vh; */
+  /* background-color: #e1e8ee; */
+  background-color: #000000;
   display: flex;
   align-items: center;
   justify-content: center;

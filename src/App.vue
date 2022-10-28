@@ -1,14 +1,45 @@
 <template>
   <div id="app">
-    <nav>
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </nav>
-    <router-view/>
+    <div v-if="$route.meta.keepAlive">
+      <HeaderView />
+    </div>
+    <router-view></router-view>
   </div>
 </template>
-
+<script>
+import HeaderView from "./components/Header-View.vue";
+export default {
+  name: "App",
+  provide() {
+    return {
+      reload: this.reload,
+    };
+  },
+  data() {
+    return {
+      isRouterAlive: true,
+    };
+  },
+  components: {
+    HeaderView,
+  },
+  methods: {
+    reload() {
+      this.isRouterAlive = false;
+      this.$nextTick(() => {
+        this.isRouterAlive = true;
+      });
+    },
+  },
+};
+</script>
 <style>
+a .icon-text {
+  padding: 0px !important;
+}
+a span {
+  height: 0px;
+}
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
