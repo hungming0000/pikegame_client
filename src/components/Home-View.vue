@@ -1,14 +1,13 @@
 <template>
+  <keep-alive v-if="isReloadData">
   <div class="tile ttzc-tile">
     <div class="tile-content">
       <div class="ttzc-table-wrap">
-        <b-button style="float: right;margin-bottom: 10px;z-index:1" @click="CreateTournament()"
+        <b-button
+          style="float: right; margin-bottom: 10px; z-index: 1"
+          @click="CreateTournament()"
           >新增比賽</b-button
-        >
-        <!-- <b-button style="float: center;display: none;" @click="CreateTournament()">
-          查看詳細比分
-        </b-button> -->
-
+        >      
         <!--@details-open="(row) => showDetail(row['tournamentid'])"
         @details-open="(row) => $buefy.toast.open(`Expanded ${row['tournamentid']}`)"   :columns="columns"
         -->
@@ -42,9 +41,28 @@
           >
             {{ props.row.tournamentdate }}
           </b-table-column>
+          <b-table-column
+            class="th-wrap is-centered"
+            label=""
+            style="width: 50px"
+            :td-attrs="columnTdAttrs"
+            :th-attrs="columnThAttrs"
+            v-slot="props"
+          >
+            <b-button @click="CreateSession(props.row.tournamentid)">
+              <b-icon
+                pack="fas"
+                icon="plus"
+                size="is-large"
+                style="display:inline-block"
+                type="is-success"               
+              ></b-icon>
+              <span style="margin-left:5px;display:inline-block">新增場次</span></b-button
+            >
+          </b-table-column>
 
           <template #detail="props">
-            <!-- <div>{{ props.row }}</div> #dbf6fd oneItem in filters.filter(item => {item.type == 'filter'})-->
+            <!-- <div>{{ props.row }}</div> #dbf6fd oneItem in filters.filter(item => {item.type == 'filter'}) <i class="fa-duotone fa-plus"></i>-->          
             <article
               class="media"
               v-for="item in filterSessionDataMethod(props.row.tournamentid)"
@@ -60,8 +78,6 @@
                     <span class="sst">
                       比賽時間：{{ item.sessiontime }}<br />
                     </span>
-
-                    <!-- <HR size="8px" style="color:white"></HR> -->
                     <span class="line"></span>
                     <span>
                       <span style="float: left">
@@ -92,11 +108,7 @@
                         紅方選手：{{ item.red_account }}<br />
                       </span>
                       <span
-                        style="
-                          margin-right: 250px;
-                          float: right;
-                          font-size: 25px;
-                        "
+                        style="margin-right: 250px;float: right;font-size: 25px;"
                       >
                         {{ item.redfraction_sum }}<br />
                       </span> </span
@@ -121,38 +133,6 @@
                 </div>
               </div>
             </article>
-            <!-- <article class="media">
-              <figure class="media-left"></figure>
-              <div class="media-content">
-                <div class="content">
-                  <p>
-                    場次：{{ props.row.Item.sessionname }}<br/>
-                    <b-icon
-                        pack="fas"
-                        icon="user"
-                        size="is-small"
-                        type="is-info">
-                    </b-icon>
-                    藍方選手：{{ props.row.Item.blue_account }}<br />
-                    <b-icon
-                        pack="fas"
-                        icon="user"
-                        size="is-small"
-                        type="is-danger">
-                    </b-icon>
-                    紅方選手：{{ props.row.Item.red_account }}<br />
-                    <b-icon
-                        pack="fas"
-                        icon="user"
-                        size="is-small"
-                        type="is-success">
-                    </b-icon>
-                    裁判：{{ props.row.Item.judge_account }}<br />
-                    <br />
-                  </p>
-                </div>
-              </div>
-            </article> -->
           </template>
         </b-table>
         <!-- <table class="ttzc-table" id="ttzc_table">
@@ -269,11 +249,17 @@
         v-bind:SessiondetailList="parSessiondetailList"
       />
       <CreateTournamentModal
-        v-show="showCreateModal"
-        @close-modal="showCreateModal = false"
+        v-show="showTCreateModal"
+        @close-modal="showTCreateModal = false"
+      />
+      <CreateSessionModal
+        v-show="showSCreateModal"
+        @close-modal="showSCreateModal = false"
+        v-bind:tournamentid="ParentTournamentid"
       />
     </div>
   </div>
+</keep-alive>
 </template>
 
 
@@ -544,20 +530,24 @@ import axios from "axios";
 
 import DetialModal from "./views/DetialModal.vue";
 import CreateTournamentModal from "./views/CreateTournament.vue";
+import CreateSessionModal from "./views/CreateSession.vue";
 
 export default {
-  components: { DetialModal, CreateTournamentModal },
+  components: { DetialModal, CreateTournamentModal, CreateSessionModal },
   inject: ["reload"], // 注入reload变量
   data() {
     return {
+      isReloadData: true, 
       tableClassList: [""],
       showModal: false,
-      showCreateModal: false,
+      showTCreateModal: false,
+      showSCreateModal: false,
       listData: [],
       SessionData: [],
       TempData: {},
       parSessiondetailList: [],
       Parentsessionid: null,
+      ParentTournamentid: null,
       columns: [
         // {
         //   field: "tournamentid",
@@ -580,6 +570,11 @@ export default {
       ],
     };
   },
+  provide() {
+    return {
+      reload: this.reload
+    };
+  },    
   methods: {
     formatDate(dateString) {
       const date = new Date(dateString);
@@ -612,9 +607,14 @@ export default {
         })
         .catch((error) => console.log(error));
     },
-    //新增場次
+    //新增比賽
     CreateTournament() {
-      this.showCreateModal = true;
+      this.showTCreateModal = true;
+    },
+    //新增場次
+    CreateSession(tournamentid) {
+      this.showSCreateModal = true;
+      this.ParentTournamentid = tournamentid;     
     },
     //取得分數詳細
     GetSessiondetail() {
@@ -644,6 +644,7 @@ export default {
         type: "is-warning",
       });
     },
+    //table td 格式
     columnTdAttrs() {
       return {
         // colspan: 10,
@@ -654,15 +655,17 @@ export default {
         },
       };
     },
+    //table th 格式
     columnThAttrs() {
       return {
         class: "ttzc-header",
         style: {
-          "text-align": "center !important",
+          "text-align": "center !important;width:50px!important;",
           color: "white",
         },
       };
     },
+    //過濾場次資料
     filterSessionDataMethod(tid) {
       var arr = this.SessionData.filter(function (element) {
         return element.tournamentid == tid;
@@ -670,6 +673,12 @@ export default {
       console.log(arr);
       return arr;
     },
+    reload() {
+      this.isReloadData = false;
+      this.$nextTick(() => {
+        this.isReloadData = true;
+      });
+    }
   },
   mounted() {
     const url = this.GLOBAL.ApiUrl;
@@ -686,19 +695,6 @@ export default {
         }
       })
       .catch((error) => console.log(error));
-  },
-  computed: {
-    filterSessionData() {
-      //console.log('data'+data)
-      var tid = 1;
-      var arr = this.SessionData.filter(function (element) {
-        return element.tournamentid == tid;
-      });
-      // var list=this.SessionData;
-      // let arr =list.Where(s => s.tournamentid == tid);
-      console.log(arr);
-      return arr;
-    },
   },
 };
 

@@ -14,13 +14,7 @@
               required
             />
             <label for="email">開始時間~結束時間</label>
-            <!-- <input
-              class="form-styling"
-              style="width: 25%"
-              type="text"
-              name="tournamentstartdate"
-              placeholder=""
-            /> -->
+           
             <date-picker v-model="tournamentstartdate"  type="datetime" required></date-picker>
             <date-picker v-model="tournamentenddate"  type="datetime" ></date-picker>
             
@@ -172,6 +166,7 @@ export default {
           this.loading = false;
           if (response.data.isSuccess == true) {
             document.documentElement.querySelector(".btn-close").click();
+            this.reload();
             //this.handleClose();
           } else {
             this.error = response.data.Message;
@@ -179,25 +174,21 @@ export default {
         })
         .catch((error) => console.log(error));
 
-    },   
-    judgeChange() {
-      
-     
-      console.log('judge_accountid',this.judge_accountid)
     },
   },
   mounted() {
     this.GetPlayerAccount();
     this.GetJudgeAccount();
-  },
-  watch: {
-    judge_accountid: function(){
-        console.log('judge_accountid',this.judge_accountid)            
-    }
-   },
+  }, 
 };
 </script>
 <style scoped>
+
+@media only screen and (min-width: 769px){
+  .modal-content, .modal-card{
+    margin:0;
+  }
+}
 .modal-overlay {
   position: fixed;
   top: 0;

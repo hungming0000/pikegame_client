@@ -202,10 +202,15 @@ export default {
 			if (this.formatDate) {
 				clearInterval(this.formatDate); // 在Vue实例销毁前，清除时间定时器
 			}
-		},
+	}, 
 };
 </script>
 <style scoped>
+@media only screen and (min-width: 769px){
+  .modal-content, .modal-card{
+    margin:0;
+  }
+}
 .modal-overlay {
   position: fixed;
   top: 0;

@@ -10,11 +10,11 @@
 import HeaderView from "./components/Header-View.vue";
 export default {
   name: "App",
-  provide() {
-    return {
-      reload: this.reload,
-    };
-  },
+  // provide() {
+  //   return {
+  //     reload: this.reload,
+  //   };
+  // },
   data() {
     return {
       isRouterAlive: true,
@@ -24,12 +24,12 @@ export default {
     HeaderView,
   },
   methods: {
-    reload() {
-      this.isRouterAlive = false;
-      this.$nextTick(() => {
-        this.isRouterAlive = true;
-      });
-    },
+    // reload() {
+    //   this.isRouterAlive = false;
+    //   this.$nextTick(() => {
+    //     this.isRouterAlive = true;
+    //   });
+    // },
   },
 };
 </script>
