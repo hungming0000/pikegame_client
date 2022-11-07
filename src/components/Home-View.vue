@@ -1,141 +1,190 @@
 <template>
   <keep-alive v-if="isReloadData">
-  <div class="tile ttzc-tile">
-    <div class="tile-content">
-      <div class="ttzc-table-wrap">
-        <b-button
-          style="float: right; margin-bottom: 10px; z-index: 1"
-          @click="CreateTournament()"
-          >新增比賽</b-button
-        >      
-        <!--@details-open="(row) => showDetail(row['tournamentid'])"
+    <div class="tile ttzc-tile">
+      <div class="tile-content">
+        <div class="ttzc-table-wrap">
+          <b-button
+            style="float: right; margin-bottom: 10px; z-index: 1"
+            @click="CreateTournament()"
+            >新增比賽</b-button
+          >
+          <!--@details-open="(row) => showDetail(row['tournamentid'])"
         @details-open="(row) => $buefy.toast.open(`Expanded ${row['tournamentid']}`)"   :columns="columns"
         -->
-        <b-table
-          id="tournamenttable"
-          :data="listData"
-          :class="tableClassList"
-          ref="table"
-          detailed
-          striped
-          hoverable
-          detail-key="tournamentid"
-        >
-          <b-table-column
-            class="th-wrap is-centered"
-            field="tournamentname"
-            label="比賽名稱"
-            :th-attrs="columnThAttrs"
-            :td-attrs="columnTdAttrs"
-            v-slot="props"
+          <b-table
+            id="tournamenttable"
+            :data="listData"
+            :class="tableClassList"
+            ref="table"
+            detailed
+            striped
+            hoverable
+            detail-key="tournamentid"
           >
-            {{ props.row.tournamentname }}
-          </b-table-column>
-          <b-table-column
-            class="th-wrap is-centered"
-            field="tournamentdate"
-            label="比賽日期"
-            :td-attrs="columnTdAttrs"
-            :th-attrs="columnThAttrs"
-            v-slot="props"
-          >
-            {{ props.row.tournamentdate }}
-          </b-table-column>
-          <b-table-column
-            class="th-wrap is-centered"
-            label=""
-            style="width: 50px"
-            :td-attrs="columnTdAttrs"
-            :th-attrs="columnThAttrs"
-            v-slot="props"
-          >
-            <b-button @click="CreateSession(props.row.tournamentid)">
-              <b-icon
-                pack="fas"
-                icon="plus"
-                size="is-large"
-                style="display:inline-block"
-                type="is-success"               
-              ></b-icon>
-              <span style="margin-left:5px;display:inline-block">新增場次</span></b-button
+            <b-table-column
+              class="th-wrap is-centered"
+              field="tournamentname"
+              label="比賽名稱"
+              :th-attrs="columnThAttrs"
+              :td-attrs="columnTdAttrs"
+              v-slot="props"
             >
-          </b-table-column>
-
-          <template #detail="props">
-            <!-- <div>{{ props.row }}</div> #dbf6fd oneItem in filters.filter(item => {item.type == 'filter'}) <i class="fa-duotone fa-plus"></i>-->          
-            <article
-              class="media"
-              v-for="item in filterSessionDataMethod(props.row.tournamentid)"
-              :key="item.sessionid"
+              {{ props.row.tournamentname }}
+            </b-table-column>
+            <b-table-column
+              class="th-wrap is-centered"
+              field="tournamentdate"
+              label="比賽日期"
+              :td-attrs="columnTdAttrs"
+              :th-attrs="columnThAttrs"
+              v-slot="props"
             >
-              <figure class="media-left"></figure>
-              <div class="media-content">
-                <div class="content">
-                  <p>
-                    <span class="ssn">
-                      場次：{{ item.sessionname }}<br />
-                    </span>
-                    <span class="sst">
-                      比賽時間：{{ item.sessiontime }}<br />
-                    </span>
-                    <span class="line"></span>
-                    <span>
-                      <span style="float: left">
-                        <b-icon
-                          pack="fas"
-                          icon="user"
-                          size="is-small"
-                          type="is-info"
-                        >
-                        </b-icon>
-                        藍方選手：{{ item.blue_account }}<br />
-                      </span>
-                      <span
-                        style="margin-left: 250px; float: left; font-size: 25px"
-                      >
-                        {{ item.bluefraction_sum }}<br />
-                      </span>
-                      <span style="margin-left: 225px">-</span>
+              {{ props.row.tournamentdate }}
+            </b-table-column>
+            <b-table-column
+              class="th-wrap is-centered"
+              label=""
+              style="width: 50px"
+              :td-attrs="columnTdAttrs"
+              :th-attrs="columnThAttrs"
+              v-slot="props"
+            >
+              <b-button
+                @click="CreateSession(props.row.tournamentid)"
+                type="is-info is-light"
+              >
+                <b-icon
+                  pack="fas"
+                  icon="plus"
+                  size="is-medium"
+                  style="display: inline-block"
+                  type="is-success"
+                ></b-icon>
+                <span style="margin-left: 5px; display: inline-block"
+                  >新增場次</span
+                ></b-button
+              >
+              <div class="nav">
+                <b-button @click="btn">提示音</b-button>
+                <!-- <easy-ring :open="open" :ring="ring" :src="music" /> -->
+              </div>
+            </b-table-column>
 
-                      <span style="float: right">
-                        <b-icon
-                          pack="fas"
-                          icon="user"
-                          size="is-small"
-                          type="is-danger"
-                        >
-                        </b-icon>
-                        紅方選手：{{ item.red_account }}<br />
-                      </span>
-                      <span
-                        style="margin-right: 250px;float: right;font-size: 25px;"
-                      >
-                        {{ item.redfraction_sum }}<br />
-                      </span> </span
-                    ><br /><br />
-                    <span>
+            <template #detail="props">
+              <!-- <div>{{ props.row }}</div> #dbf6fd oneItem in filters.filter(item => {item.type == 'filter'}) <i class="fa-duotone fa-plus"></i>-->
+              <article
+                class="media"
+                v-for="item in filterSessionDataMethod(props.row.tournamentid)"
+                :key="item.sessionid"
+              >
+                <figure class="media-left"></figure>
+                <div class="media-content">
+                  <div class="content">
+                    <b-button
+                      @click="EditEquipment(item.sessionid)"
+                      type="is-danger"
+                      style="float: right"
+                      v-if="item.is_equipment_exist"
+                    >
                       <b-icon
                         pack="fas"
-                        icon="user"
+                        icon="plus"
                         size="is-small"
-                        type="is-success"
-                      >
-                      </b-icon>
-                      裁判：{{ item.judge_account }} </span
-                    ><br />
-                    <span class="save-btn">
-                      <b-button @click="Sessiondetail(item.sessionid)">
-                        查看詳細比分
-                        <!-- <font-awesome-icon icon="eye" size="lg" /> -->
-                      </b-button>
-                    </span>
-                  </p>
+                        style="display: inline-block"
+                      ></b-icon>
+                      <span style="margin-left: 5px; display: inline-block"
+                        >編輯槍頭設備編號</span
+                      ></b-button
+                    >
+                    <b-button
+                      @click="CreateEquipment(item.sessionid)"
+                      type="is-danger"
+                      style="float: right"
+                      v-else
+                    >
+                      <b-icon
+                        pack="fas"
+                        icon="plus"
+                        size="is-small"
+                        style="display: inline-block"
+                      ></b-icon>
+                      <span style="margin-left: 5px; display: inline-block"
+                        >新增槍頭設備編號</span
+                      ></b-button
+                    >
+                    <p>
+                      <span class="ssn">
+                        場次：{{ item.sessionname }}<br />
+                      </span>
+                      <span class="sst">
+                        比賽時間：{{ item.sessiontime }}<br />
+                      </span>
+                      <span class="line"></span>
+                      <span>
+                        <span style="float: left">
+                          <b-icon
+                            pack="fas"
+                            icon="user"
+                            size="is-small"
+                            type="is-info"
+                          >
+                          </b-icon>
+                          藍方選手：{{ item.blue_account }}<br />
+                        </span>
+                        <span
+                          style="
+                            margin-left: 250px;
+                            float: left;
+                            font-size: 25px;
+                          "
+                        >
+                          {{ item.bluefraction_sum }}<br />
+                        </span>
+                        <span style="margin-left: 225px">-</span>
+
+                        <span style="float: right">
+                          <b-icon
+                            pack="fas"
+                            icon="user"
+                            size="is-small"
+                            type="is-danger"
+                          >
+                          </b-icon>
+                          紅方選手：{{ item.red_account }}<br />
+                        </span>
+                        <span
+                          style="
+                            margin-right: 250px;
+                            float: right;
+                            font-size: 25px;
+                          "
+                        >
+                          {{ item.redfraction_sum }}<br />
+                        </span> </span
+                      ><br /><br />
+                      <span>
+                        <b-icon
+                          pack="fas"
+                          icon="user"
+                          size="is-small"
+                          type="is-success"
+                        >
+                        </b-icon>
+                        裁判：{{ item.judge_account }} </span
+                      ><br />
+                      <span class="save-btn">
+                        <b-button @click="Sessiondetail(item.sessionid)">
+                          查看詳細比分
+                          <!-- <font-awesome-icon icon="eye" size="lg" /> -->
+                        </b-button>
+                      </span>
+                    </p>
+                  </div>
                 </div>
-              </div>
-            </article>
-          </template>
-        </b-table>
-        <!-- <table class="ttzc-table" id="ttzc_table">
+              </article>
+            </template>
+          </b-table>
+          <!-- <table class="ttzc-table" id="ttzc_table">
           <caption>          
           </caption>
           <colgroup>
@@ -236,30 +285,42 @@
             </tr>
           </tbody>         
         </table> -->
+        </div>
       </div>
-    </div>
 
-    <div>
-      <!-- <div class="save-btn">
+      <div>
+        <!-- <div class="save-btn">
           <button @click="showModal = true">Save</button>
         </div> -->
-      <DetialModal
-        v-show="showModal"
-        @close-modal="showModal = false"
-        v-bind:SessiondetailList="parSessiondetailList"
-      />
-      <CreateTournamentModal
-        v-show="showTCreateModal"
-        @close-modal="showTCreateModal = false"
-      />
-      <CreateSessionModal
-        v-show="showSCreateModal"
-        @close-modal="showSCreateModal = false"
-        v-bind:tournamentid="ParentTournamentid"
-      />
+        <DetialModal
+          v-if="showModal"
+          @close-modal="showModal = false"
+          v-bind:SessiondetailList="parSessiondetailList"
+        />
+        <CreateTournamentModal
+          v-if="showTCreateModal"
+          @close-modal="showTCreateModal = false"
+        />
+        <CreateSessionModal
+          v-if="showSCreateModal"
+          @close-modal="showSCreateModal = false"
+          v-bind:tournamentid="ParentTournamentid"
+        />
+        <CreateEquipmentModal
+          v-if="showETcreateModal"
+          @close-modal="showETcreateModal = false"
+          v-bind:sessionid="Parentsessionid"
+        />
+
+        <EditEquipmentModal
+          v-if="showETEditModal"
+          @close-modal="showETEditModal = false"
+          :cparblue_equipmentid="parblue_equipmentid"
+          :cparred_equipmentid="parred_equipmentid"
+        />
+      </div>
     </div>
-  </div>
-</keep-alive>
+  </keep-alive>
 </template>
 
 
@@ -531,23 +592,43 @@ import axios from "axios";
 import DetialModal from "./views/DetialModal.vue";
 import CreateTournamentModal from "./views/CreateTournament.vue";
 import CreateSessionModal from "./views/CreateSession.vue";
+import CreateEquipmentModal from "./views/CreateEquipment.vue";
+import EditEquipmentModal from "./views/EditEquipment.vue";
+import music from '../assets/bellalert.wav'
+//import music from '@/utils/y913.wav'../../assets/close-button.png
 
 export default {
-  components: { DetialModal, CreateTournamentModal, CreateSessionModal },
-  inject: ["reload"], // 注入reload变量
+  components: {
+    DetialModal,
+    CreateTournamentModal,
+    CreateSessionModal,
+    CreateEquipmentModal,
+    EditEquipmentModal,
+      },
+  //inject: ["reload"], // 注入reload变量
   data() {
     return {
-      isReloadData: true, 
+      isReloadData: true,
       tableClassList: [""],
       showModal: false,
       showTCreateModal: false,
       showSCreateModal: false,
+      showETcreateModal: false,
+      showETEditModal: false,
       listData: [],
       SessionData: [],
       TempData: {},
       parSessiondetailList: [],
+      parEquipmentList: [],
+      parblue_equipmentid: "",
+      parred_equipmentid: "",
       Parentsessionid: null,
       ParentTournamentid: null,
+      //舊的 防止重複抓取
+      sessiondetialid: "",
+      //鈴聲
+      open: false,
+      ring: false,
       columns: [
         // {
         //   field: "tournamentid",
@@ -572,9 +653,9 @@ export default {
   },
   provide() {
     return {
-      reload: this.reload
+      reload: this.reload,
     };
-  },    
+  },
   methods: {
     formatDate(dateString) {
       const date = new Date(dateString);
@@ -600,7 +681,6 @@ export default {
           this.loading = false;
           if (response.data.isSuccess == true) {
             this.SessionData = response.data.Data.slice();
-            console.log(this.SessionData);
           } else {
             this.error = response.data.Message;
           }
@@ -614,7 +694,17 @@ export default {
     //新增場次
     CreateSession(tournamentid) {
       this.showSCreateModal = true;
-      this.ParentTournamentid = tournamentid;     
+      this.ParentTournamentid = tournamentid;
+    },
+    //新增設備編號
+    CreateEquipment(sessionid) {
+      this.showETcreateModal = true;
+      this.Parentsessionid = sessionid;
+    },
+    //編輯設備編號
+    EditEquipment(sessionid) {
+      this.Parentsessionid = sessionid;
+      this.GetEquipment();
     },
     //取得分數詳細
     GetSessiondetail() {
@@ -628,6 +718,32 @@ export default {
           this.loading = false;
           if (response.data.isSuccess == true) {
             this.parSessiondetailList = response.data.Data.slice();
+          } else {
+            this.error = response.data.Message;
+          }
+        })
+        .catch((error) => console.log(error));
+    },
+    //取得設備編號
+    async GetEquipment() {
+      const url = this.GLOBAL.ApiUrl;
+
+      await axios
+        .post(
+          url + "/Pikegame/Equipmentsetting/GetEquipmentsetting",
+          this.Parentsessionid
+        )
+        .then((response) => {
+          if (response.data.isSuccess == true) {
+            this.parEquipmentList = response.data.Data.slice();
+
+            if (this.parEquipmentList != []) {
+              this.parblue_equipmentid = this.parEquipmentList[0].equipmentid;
+              this.parred_equipmentid = this.parEquipmentList[1].equipmentid;
+
+              this.loading = false;
+              this.showETEditModal = true;
+            }
           } else {
             this.error = response.data.Message;
           }
@@ -670,13 +786,131 @@ export default {
       var arr = this.SessionData.filter(function (element) {
         return element.tournamentid == tid;
       });
-      console.log(arr);
+
       return arr;
     },
     reload() {
       this.isReloadData = false;
       this.$nextTick(() => {
         this.isReloadData = true;
+      });
+    },
+    //Websockt
+    initWebSocket() {
+      //初始化weosocket
+      //wss://localhost:44301/api/NotifyWebSocket
+      //var accountid = sessionStorage.getItem('accountid');
+
+      const wsuri = "wss://localhost:44302/api/NotifyWebSocket";
+      this.websock = new WebSocket(wsuri);
+      // 客户端接收服务端数据时触发
+      this.websock.onmessage = this.websocketonmessage;
+      // 连接建立时触发
+      this.websock.onopen = this.websocketonopen;
+      // 通信发生错误时触发
+      this.websock.onerror = this.websocketonerror;
+      // 连接关闭时触发
+      this.websock.onclose = this.websocketclose;
+    },
+    // 连接建立时触发
+    websocketonopen() {
+      //开启心跳
+      //this.start();
+      var accountid = sessionStorage.getItem("accountid");
+
+      this.websocketsend(JSON.parse(accountid));
+
+      //连接建立之后执行send方法发送数据
+      // let actions = {"room":"007854ce7b93476487c7ca8826d17eba","info":"1121212"};
+      // this.websocketsend(JSON.stringify(actions));
+    },
+    // 通信发生错误时触发
+    websocketonerror() {
+      console.log("出现错误");
+      this.reconnect();
+    },
+    // 客户端接收服务端数据时触发
+    websocketonmessage(e) {
+      var str = e.data;
+      str = str.split("_");
+      var team = str[0];
+      var result = str[1];
+      var sessiondetialid = str[2];
+
+      //btn();
+      console.log("team" + team);
+      console.log("result" + result);
+      console.log("sessiondetialid" + sessiondetialid);
+
+      //收到服务器信息，心跳重置 2022/11/04 開啟才會有心跳
+      //this.reset();
+    },
+    websocketsend(Data) {
+      this.websock.send(Data); //这里可以自己跟后端约定
+    },
+    // 连接关闭时触发
+    websocketclose(e) {
+      //关闭
+      console.log("断开连接", e);
+      //重连
+      this.reconnect();
+    },
+    reconnect() {
+      //重新连接
+      var that = this;
+      if (that.lockReconnect) {
+        return;
+      }
+      that.lockReconnect = true;
+      //没连接上会一直重连，设置延迟避免请求过多
+      that.timeoutnum && clearTimeout(that.timeoutnum);
+      that.timeoutnum = setTimeout(function () {
+        //新连接
+        that.initWebSocket();
+        that.lockReconnect = false;
+      }, 5000);
+    },
+    reset() {
+      //重置心跳
+      var that = this;
+      //清除时间
+      clearTimeout(that.timeoutObj);
+      clearTimeout(that.serverTimeoutObj);
+      //重启心跳
+      that.start();
+    },
+    start() {
+      //开启心跳
+      console.log("開啟心跳");
+
+      var self = this;
+      self.timeoutObj && clearTimeout(self.timeoutObj);
+      self.serverTimeoutObj && clearTimeout(self.serverTimeoutObj);
+      self.timeoutObj = setTimeout(function () {
+        console.log(self.websock);
+        //这里发送一个心跳，后端收到后，返回一个心跳消息，
+        if (self.websock.readyState == 1) {
+          self.websock.send("heartCheck");
+          //如果连接正常
+          // var accountid = sessionStorage.getItem('accountid');
+
+          //  self.websock.send(JSON.parse(accountid)); //这里可以自己跟后端约定
+        } else {
+          //否则重连
+          self.reconnect();
+        }
+        self.serverTimeoutObj = setTimeout(function () {
+          //超时关闭
+          self.websock.close();
+        }, self.timeout);
+      }, self.timeout);
+    },
+    btn() {
+      // this.open = true ;
+      // this.ring = true;
+      const audio = new Audio(music);
+      audio.addEventListener('canplaythrough', () => {
+        audio.play();
       });
     }
   },
@@ -689,12 +923,23 @@ export default {
         if (response.data.isSuccess == true) {
           this.listData = response.data.Data;
           this.GetSessionForWeb();
-          console.log(this.listData);
         } else {
           this.error = response.data.Message;
         }
       })
       .catch((error) => console.log(error));
+  },
+  created() {
+    this.initWebSocket();
+  },
+  destroyed() {
+    this.websock.close(); //离开路由之后断开websocket连接
+  },
+  // 销毁定时器
+  beforeDestroy() {
+    if (this.formatDate) {
+      clearInterval(this.formatDate); // 在Vue实例销毁前，清除时间定时器
+    }
   },
 };
 

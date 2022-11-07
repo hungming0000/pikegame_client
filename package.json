@@ -17,6 +17,7 @@
     "buefy": "^0.9.0",
     "core-js": "^3.8.3",
     "crypto-js": "^4.1.1",
+    "easy-ring": "^2.0.2",
     "jquery": "^3.6.1",
     "moment": "^2.29.4",
     "mutationobserver-shim": "^0.3.7",

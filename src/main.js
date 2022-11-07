@@ -18,6 +18,7 @@ import { faCheck, faCheckCircle, faInfoCircle, faExclamationTriangle, faExclamat
     faArrowUp, faAngleRight, faAngleLeft, faAngleDown,faChevronRight,faChevronDown,
     faEye, faEyeSlash, faCaretDown, faCaretUp, faUpload } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import EasyRing from 'easy-ring'
 
 library.add(faCheck, faCheckCircle, faInfoCircle, faExclamationTriangle, faExclamationCircle,
     faArrowUp, faAngleRight, faAngleLeft, faAngleDown,faChevronRight,faChevronDown,
@@ -41,4 +42,6 @@ Vue.use(Buefy,{
   defaultIconPack: 'fas',
 });
  Vue.use(BootstrapVue);
+ Vue.use(EasyRing);
+
 

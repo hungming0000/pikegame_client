@@ -131,10 +131,15 @@ export default {
               if (response.data.isSuccess == true) {
                 
                 this.loggedUser = response.data.Data[0].accountname;
-                sessionStorage.setItem(
-                  "userInfo",
-                  JSON.stringify(response.data.Data[0])
-                );
+                // sessionStorage.setItem(
+                //   "userInfo",
+                //   JSON.stringify(response.data.Data[0])
+                // );
+                sessionStorage.setItem("accountid",JSON.stringify(response.data.Data[0].accountid));
+                sessionStorage.setItem("accountname",JSON.stringify(response.data.Data[0].accountname));
+                sessionStorage.setItem("accountgroupname",JSON.stringify(response.data.Data[0].accountgroupname));
+
+
                 this.$router.push({ name: "Home" });
                 this.$buefy.toast.open({
                   duration: 5000,

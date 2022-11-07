@@ -84,8 +84,7 @@ export default {
 			//this.websock.close(); //离开路由之后断开websocket连接
 		},
   methods: {
-    handleSave() {
-      console.log(this.dataObj);
+    handleSave() {      
       this.handleClose();
     },
     handleClose() {
