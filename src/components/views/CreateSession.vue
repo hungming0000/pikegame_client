@@ -83,39 +83,7 @@
                   {{ item.accountname }}
                 </option>
               </b-select>
-            </b-field>    
-
-            <!-- <label for="blue_accountid">藍方選手</label>
-            <select v-model="blue_accountid" class="form-styling" required>
-              <option
-                v-for="item in PlayerAccountList"
-                :value="item.accountid"
-                :key="item.accountid"
-              >
-                {{ item.accountname }}
-              </option>
-            </select>
-            <label for="red_accountid">紅方選手</label>
-            <select v-model="red_accountid" class="form-styling" required>
-              <option
-                v-for="item in PlayerAccountList"
-                :value="item.accountid"
-                :key="item.accountid"
-              >
-                {{ item.accountname }}
-              </option>
-            </select> 
-
-            <label>裁判</label>
-            <select v-model="judge_accountid" class="form-styling">
-              <option
-                v-for="items in JudgeAccountList"
-                :value="items.accountid"
-                :key="items.accountid"
-              >
-                {{ items.accountid }}-{{ items.accountname }}
-              </option>
-            </select>-->           
+            </b-field> 
             <b-button type="submit" variant="success" @click="SetSession"
               >儲存</b-button
             >

@@ -81,6 +81,7 @@
                 <figure class="media-left"></figure>
                 <div class="media-content">
                   <div class="content">
+                    <span v-if="item.mstatus==1">
                     <b-button
                       @click="EditEquipment(item.sessionid)"
                       type="is-danger"
@@ -115,12 +116,15 @@
                         >新增槍頭設備編號</span
                       ></b-button
                     >
+                  </span>
                     <p>
                       <section>
-                        <b-field>
-                            <b-radio-button v-model="item.mstatus"
+                        <b-field >
+                            <b-radio-button v-model="item.mstatus" @click.native="clickrb(2,item.sessionid)"
                                 native-value="2"
-                                type="is-danger is-light is-outlined" >
+                                type="is-danger is-light is-outlined"
+                                v-permission="'clickrb'"
+                                >
                                 <template v-if="item.mstatus===2">
                                   <b-icon icon="check"></b-icon>
                                 </template>
@@ -128,18 +132,55 @@
                                 <span>比賽結束</span>
                             </b-radio-button>
 
-                            <b-radio-button v-model="item.mstatus"
+                            <b-radio-button v-model="item.mstatus"  @click.native="clickrb(1,item.sessionid)"
                                 native-value="1"
-                                type="is-success is-light is-outlined">
+                                type="is-success is-light is-outlined"
+                                v-permission="'clickrb'"
+                                >
                                 <template v-if="item.mstatus===1">
                                   <b-icon icon="check"></b-icon>
                                 </template>
                                 <span>比賽開始</span>
                             </b-radio-button>
 
-                            <b-radio-button v-model="item.mstatus"
+                            <b-radio-button v-model="item.mstatus" @click.native="clickrb(0,item.sessionid)"
                                 native-value="0"
-                                type="is-primary is-light is-outlined">
+                                type="is-primary is-light is-outlined"
+                                v-permission="'clickrb'">
+                                <template v-if="item.mstatus===0">
+                                  <b-icon icon="check"></b-icon>
+                                </template>
+                                <span>尚未開始</span>   
+                            </b-radio-button>                              
+                        </b-field>
+                        <b-field >
+                            <b-radio-button v-model="item.mstatus" @click.prevent.native=""
+                                native-value="2"
+                                type="is-danger is-light is-outlined"
+                                v-permission="'childclickrb'"
+                                >
+                                <template v-if="item.mstatus===2">
+                                  <b-icon icon="check"></b-icon>
+                                </template>
+                                <!-- <b-icon icon="close"></b-icon> -->
+                                <span>比賽結束</span>
+                            </b-radio-button>
+
+                            <b-radio-button v-model="item.mstatus"  @click.prevent.native=""
+                                native-value="1"
+                                type="is-success is-light is-outlined"
+                                v-permission="'childclickrb'"
+                                >
+                                <template v-if="item.mstatus===1">
+                                  <b-icon icon="check"></b-icon>
+                                </template>
+                                <span>比賽開始</span>
+                            </b-radio-button>
+
+                            <b-radio-button v-model="item.mstatus" @click.prevent.native=""
+                                native-value="0"
+                                type="is-primary is-light is-outlined"
+                                v-permission="'childclickrb'">
                                 <template v-if="item.mstatus===0">
                                   <b-icon icon="check"></b-icon>
                                 </template>
@@ -520,6 +561,7 @@ col-zip {
 .b-radio.radio.button.is-selected{
   z-index:0 !important;
 }
+
 </style>
 
 
@@ -544,7 +586,7 @@ import CreateEquipmentModal from "./views/CreateEquipment.vue";
 import EditEquipmentModal from "./views/EditEquipment.vue";
 import TypefractionModal from "./views/Typefraction.vue";
 import music from "../assets/bellalert.wav";
-//import music from '@/utils/y913.wav'../../assets/close-button.png
+import Swal from 'sweetalert2'
 
 export default {
   components: {
@@ -665,6 +707,25 @@ export default {
       this.showSCreateModal = true;
       this.ParentTournamentid = tournamentid;
     },
+    //修改比賽狀態
+    async SetSessionmstatus(mstatus,mstatusname,sessionid){
+      const url = this.GLOBAL.ApiUrl;
+      await axios
+        .post(url + "/Pikegame/Session/SetSessionmstatus",{
+          mstatus:mstatus,
+          sessionid:sessionid
+        } )
+        .then((response) => {
+          this.loading = false;
+          if (response.data.isSuccess == true) {
+            Swal.fire("已修改!", `比賽狀態已修改為${mstatusname}`, "success");
+            this.reload();
+          } else {
+            this.error = response.data.Message;
+          }
+        })
+        .catch((error) => console.log(error));
+    },
     //新增設備編號
     CreateEquipment(sessionid) {
       this.showETcreateModal = true;
@@ -696,7 +757,6 @@ export default {
     //取得設備編號
     async GetEquipment() {
       const url = this.GLOBAL.ApiUrl;
-
       await axios
         .post(
           url + "/Pikegame/Equipmentsetting/GetEquipmentsetting",
@@ -894,6 +954,7 @@ export default {
         }, self.timeout);
       }, self.timeout);
     },
+    //測試鈴聲
     btn() {
       // this.open = true ;
       // this.ring = true;
@@ -903,6 +964,43 @@ export default {
         audio.play();
       });
     },
+    //切換比賽狀態
+    clickrb(mstatus,sessionid){
+     
+     
+
+      var mstatusname='';
+      switch (mstatus) {
+            case 0: //尚未比賽狀態
+            mstatusname = "尚未比賽狀態";
+            break;
+            case 1: //比賽開始狀態
+            mstatusname = "比賽開始狀態";
+            break;
+            case 2: //比賽結束狀態
+            mstatusname = "比賽結束狀態";
+            break;
+      }
+
+      Swal.fire({
+        title: `確定要修改嗎?`,
+        text: `確定要修改為${mstatusname}嗎?`,
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "是的!我要修改",
+        cancelButtonText: "取消",
+      }).then((result) => {
+        if (result.isConfirmed) {
+            this.SetSessionmstatus(mstatus,mstatusname,sessionid);         
+        }
+        else{
+          this.reload();
+        }
+      });
+
+    }
   },
   // beforeRouteLeave(to, from, next) {
   //            // 设置下一个路由的 meta

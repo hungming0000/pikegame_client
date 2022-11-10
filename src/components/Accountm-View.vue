@@ -244,11 +244,6 @@ export default {
       });
     },
 
-    // //新增場次
-    // CreateSession(tournamentid) {
-    //   this.showSCreateModal = true;
-    //   this.ParentTournamentid = tournamentid;
-    // },
     handleReload() {
       this.reload(); //在这里可直接调用 ，一般用在新增一条数据，或者删除了一条数据，需要刷新当前页面的时候
     },

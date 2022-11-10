@@ -37,38 +37,6 @@
               >
               </b-input>
             </b-field>
-
-            <!-- <label for="tournamentname" >比賽名稱</label>
-            <input
-              class="form-styling"
-              type="text"
-              name="tournamentname"
-              v-model="tournamentname"
-              placeholder=""
-              required
-            /> 
-            <label for="email">開始時間~結束時間</label>
-
-            <date-picker
-              v-model="tournamentstartdate"
-              type="datetime"
-              required
-            ></date-picker>
-            <date-picker
-              v-model="tournamentenddate"
-              type="datetime"
-            ></date-picker>
-
-            <label for="maxfraction">獲勝總分</label>
-            <input
-              class="form-styling"
-              type="text"
-              name="maxfraction"
-              v-model="maxfraction"
-              placeholder=""
-              required
-            />-->
-           
             <b-button type="submit" variant="success" @click="SetTournament"
               >儲存</b-button
             >
