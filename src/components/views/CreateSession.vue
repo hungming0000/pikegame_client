@@ -4,7 +4,18 @@
       <div class="modal-body">
         <div class="cbtn-wrap">
           <form class="form-signup" action="" method="post" name="form">
+
             <label for="sessionname">場次</label>
+            <b-field style="width: 50%; margin-left: 25%">
+              <b-input
+                v-model="sessionname"
+                placeholder="請輸入場次"
+                required
+              ></b-input>
+            </b-field>
+
+
+            <!-- <label for="sessionname">場次</label>
             <input
               class="form-styling"
               type="text"
@@ -12,15 +23,69 @@
               v-model="sessionname"
               placeholder=""
               required
-            />
-            <label for="email">場次開始時間</label>
+            /> -->
+            <label for="sessiontime">場次開始時間</label>
 
             <date-picker
               v-model="sessiontime"
               type="datetime"
               required
             ></date-picker>
+
             <label for="blue_accountid">藍方選手</label>
+            <b-field style="width:50%;margin-left: 25%">
+              <b-select
+                placeholder="請選擇藍方選手"
+                v-model="blue_accountid"                
+                required
+                expanded
+              >
+                <option
+                  v-for="item in PlayerAccountList"
+                  :value="item.accountid"
+                  :key="item.accountid"
+                >
+                  {{ item.accountname }}
+                </option>
+              </b-select>
+            </b-field>     
+
+            <label for="red_accountid">紅方選手</label>
+            <b-field style="width:50%;margin-left: 25%" >
+              <b-select
+                placeholder="請選擇紅方選手"
+                v-model="blue_accountid"                
+                required
+                expanded
+              >
+                <option
+                  v-for="item in PlayerAccountList"
+                  :value="item.accountid"
+                  :key="item.accountid"
+                >
+                  {{ item.accountname }}
+                </option>
+              </b-select>
+            </b-field>    
+            <label for="judge_accountid">裁判</label>
+            <b-field style="width:50%;margin-left: 25%">
+              <b-select
+                placeholder="請選擇裁判"
+                v-model="judge_accountid"                
+                required
+                expanded
+              >
+                <option
+                  v-for="item in JudgeAccountList"
+                  :value="item.accountid"
+                  :key="item.accountid"
+                >
+                  {{ item.accountname }}
+                </option>
+              </b-select>
+            </b-field>    
+
+            <!-- <label for="blue_accountid">藍方選手</label>
             <select v-model="blue_accountid" class="form-styling" required>
               <option
                 v-for="item in PlayerAccountList"
@@ -39,7 +104,7 @@
               >
                 {{ item.accountname }}
               </option>
-            </select>
+            </select> 
 
             <label>裁判</label>
             <select v-model="judge_accountid" class="form-styling">
@@ -50,8 +115,7 @@
               >
                 {{ items.accountid }}-{{ items.accountname }}
               </option>
-            </select>
-            <br />
+            </select>-->           
             <b-button type="submit" variant="success" @click="SetSession"
               >儲存</b-button
             >

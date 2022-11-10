@@ -9,6 +9,9 @@
               <b-input v-model="accountid" disabled></b-input>
             </b-field>
 
+
+
+
             <label for="accountname">使用者名稱</label>
             <b-field style="width: 50%; margin-left: 25%">
               <b-input
@@ -45,39 +48,7 @@
                   {{ item.accountgroupname }}
                 </option>
               </b-select>
-            </b-field>
-            <!-- <label for="accountid">帳號</label>
-              <span style="color:white">{{accountid}}</span>              
-              <label for="accountname">使用者名稱</label>
-              <input
-                class="form-styling"
-                type="text"
-                name="accountname"
-                v-model="accountname"
-                placeholder=""
-                required
-              />
-              <label for="accpassword">使用者密碼</label>
-              <input
-                class="form-styling"
-                type="password"
-                name="accpassword"
-                v-model="accpassword"
-                placeholder=""
-                required
-              />
-  
-              <label for="accountstyle">帳號類型</label>
-              <select v-model="accountstyle" class="form-styling" onchange="onChange($event)" required>
-                <option
-                  v-for="item in AccountgroupnameList"
-                  :value="item.accountstyle"
-                  :key="item.accountgroupname"
-                >
-                  {{ item.accountgroupname }}
-                </option>
-              </select>
-   -->
+            </b-field>           
             <br />
             <b-button type="submit" variant="success" @click="EditAccountm"
               >儲存</b-button
@@ -87,7 +58,7 @@
         </div>
       </div>
     </div>
-    <div id="adclose" class="close btn-close" @click="$emit('close-modal')">
+    <div id="addclose" class="close btn-close" @click="$emit('close-modal')">
       <img class="close-img" src="../../assets/close-button.png" alt="" />
     </div>
   </div>
@@ -117,7 +88,7 @@ export default {
       this.handleClose();
     },
     GetAccount() {
-      console.log("this.Paccountid" + this.Paccountid);
+     
       const url = this.GLOBAL.ApiUrl;
       axios
         .post(
@@ -176,6 +147,26 @@ export default {
     },
     accountstyleChange(event) {
       console.log(event.target.value);
+    },
+  },
+  watch: {
+    accountstyle: {
+      handler: function () {
+        switch (this.accountstyle) {
+          case 0: //比賽制定者
+            this.accountgroupname = "比賽制定者";
+            break;
+          case 1: //裁判
+            this.accountgroupname = "裁判";
+            break;
+          case 2: //選手
+            this.accountgroupname = "選手";
+            break;
+          case 3: //觀眾
+            this.accountgroupname = "觀眾";
+            break;
+        }
+      },
     },
   },
   mounted() {

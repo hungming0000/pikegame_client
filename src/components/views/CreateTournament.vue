@@ -4,7 +4,41 @@
       <div class="modal-body">
         <div class="cbtn-wrap">
           <form class="form-signup" action="" method="post" name="form">
-            <label for="tournamentname" >比賽名稱</label>
+            <label for="tournamentname">比賽名稱</label>
+            <b-field style="width: 50%; margin-left: 25%">
+              <b-input
+                v-model="tournamentname"
+                placeholder="請輸入比賽名稱"
+                required
+              ></b-input>
+            </b-field>
+
+            <label for="email">開始時間~結束時間</label>
+
+            <date-picker
+              v-model="tournamentstartdate"
+              type="datetime"
+              required
+            ></date-picker>
+            <date-picker
+              v-model="tournamentenddate"
+              type="datetime"
+            ></date-picker>
+            <br />
+
+            <label for="maxfraction">獲勝總分</label>
+            <b-field style="width: 50%; margin-left: 25%">
+              <b-input
+                placeholder="請輸入獲勝總分"
+                type="number"
+                name="maxfraction"
+                v-model="maxfraction"
+                required
+              >
+              </b-input>
+            </b-field>
+
+            <!-- <label for="tournamentname" >比賽名稱</label>
             <input
               class="form-styling"
               type="text"
@@ -12,52 +46,19 @@
               v-model="tournamentname"
               placeholder=""
               required
-            />
+            /> 
             <label for="email">開始時間~結束時間</label>
-           
-            <date-picker v-model="tournamentstartdate"  type="datetime" required></date-picker>
-            <date-picker v-model="tournamentenddate"  type="datetime" ></date-picker>
-            
 
-            <!-- <label for="sessionname">場次</label>
-            <input
-              class="form-styling"
-              type="text"
-              name="sessionname"
-              v-model="sessionname"
-              placeholder=""
+            <date-picker
+              v-model="tournamentstartdate"
+              type="datetime"
               required
-            />
-            <label for="blue_accountid">藍方選手</label>
-            <select v-model="blue_accountid" class="form-styling" required>
-              <option
-                v-for="item in PlayerAccountList"
-                :value="item.accountid"
-                :key="item.accountid"
-                >{{ item.accountname }}</option
-              >
-            </select>          
-            <label for="red_accountid">紅方選手</label>
-            <select v-model="red_accountid" class="form-styling" required>
-              <option
-                v-for="item in PlayerAccountList"
-                :value="item.accountid"
-                :key="item.accountid"
-                >{{ item.accountname }}</option
-              >
-            </select>
-            
-            <label >裁判</label>
-            <select  v-model="judge_accountid" class="form-styling"  @change="judgeChange">
-              <option
-                v-for="items in JudgeAccountList"
-                :value="items.accountid"
-                :key="items.accountid"
-                >{{ items.accountid }}-{{ items.accountname }}</option
-              >
-            </select>           
-            -->
-            
+            ></date-picker>
+            <date-picker
+              v-model="tournamentenddate"
+              type="datetime"
+            ></date-picker>
+
             <label for="maxfraction">獲勝總分</label>
             <input
               class="form-styling"
@@ -66,9 +67,11 @@
               v-model="maxfraction"
               placeholder=""
               required
-            /> 
-            <br />           
-            <b-button type="submit"  variant="success" @click="SetTournament">儲存</b-button>
+            />-->
+           
+            <b-button type="submit" variant="success" @click="SetTournament"
+              >儲存</b-button
+            >
             <!-- <a ng-click="checked = !checked" class="btn-signup">儲存</a> -->
           </form>
         </div>
@@ -85,11 +88,11 @@
 import axios from "axios";
 import DatePicker from "vue2-datepicker";
 import "vue2-datepicker/index.css";
-import moment from 'moment'
+import moment from "moment";
 
 export default {
   components: { DatePicker },
-  inject:['reload'], 
+  inject: ["reload"],
   name: "Modal-view",
   data: function () {
     return {
@@ -99,7 +102,7 @@ export default {
       },
       PlayerAccountList: [],
       JudgeAccountList: [],
-      tournamentname:"",
+      tournamentname: "",
       tournamentstartdate: "",
       tournamentenddate: "",
       maxfraction: "",
@@ -111,9 +114,9 @@ export default {
       bluefraction_sum: "",
     };
   },
-  
+
   methods: {
-    handleSave() {      
+    handleSave() {
       this.handleClose();
     },
     handleClose() {
@@ -147,21 +150,25 @@ export default {
         })
         .catch((error) => console.log(error));
     },
-    SetTournament(){
-      const url = this.GLOBAL.ApiUrl;      
+    SetTournament() {
+      const url = this.GLOBAL.ApiUrl;
       axios
-        .post(url + "/Pikegame/Tournament/SetTournament",{
+        .post(url + "/Pikegame/Tournament/SetTournament", {
           tournamentname: this.tournamentname,
-          tournamentstartdate:  moment(this.tournamentstartdate).format('yyyy-MM-DD HH:mm:ss'),
-          tournamentenddate:  moment(this.tournamentenddate).format('yyyy-MM-DD HH:mm:ss'),
+          tournamentstartdate: moment(this.tournamentstartdate).format(
+            "yyyy-MM-DD HH:mm:ss"
+          ),
+          tournamentenddate: moment(this.tournamentenddate).format(
+            "yyyy-MM-DD HH:mm:ss"
+          ),
           maxfraction: this.maxfraction,
           judge_accountid: this.judge_accountid,
           sessionname: this.sessionname,
           red_accountid: this.red_accountid,
           blue_accountid: this.blue_accountid,
           redfraction_sum: this.redfraction_sum,
-          bluefraction_sum: this.bluefraction_sum,          
-            })
+          bluefraction_sum: this.bluefraction_sum,
+        })
         .then((response) => {
           this.loading = false;
           if (response.data.isSuccess == true) {
@@ -173,20 +180,22 @@ export default {
           }
         })
         .catch((error) => console.log(error));
-
+    },
+    clearDateTime() {
+      this.tournamentstartdate = null;
     },
   },
   mounted() {
     this.GetPlayerAccount();
     this.GetJudgeAccount();
-  }, 
+  },
 };
 </script>
 <style scoped>
-
-@media only screen and (min-width: 769px){
-  .modal-content, .modal-card{
-    margin:0;
+@media only screen and (min-width: 769px) {
+  .modal-content,
+  .modal-card {
+    margin: 0;
   }
 }
 .modal-overlay {

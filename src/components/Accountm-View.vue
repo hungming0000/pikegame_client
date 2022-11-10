@@ -4,6 +4,7 @@
       <div class="ttzc-table-wrap">
         <b-button
           style="float: right; margin-bottom: 10px; z-index: 1"
+          type="is-primary is-light"
           @click="CreateAccountm()"
           v-permission="'CreateAccountm'"
           >新增使用者</b-button
@@ -76,6 +77,23 @@
                 >編輯使用者</span
               ></b-button
             >
+            <b-button
+              @click="DeleteAccountm(props.row.accountid)"
+              type="is-info is-light"
+              style="margin-left:5px"
+              v-permission="'DeleteAccountm'"
+            >
+            <b-icon
+                pack="fas"
+                icon="trash"
+                size="is-medium"
+                style="display: inline-block"
+                type="is-danger"
+              ></b-icon>
+              <span style="margin-left: 5px; display: inline-block"
+                >刪除</span
+              ></b-button
+            >
             <div class="nav">
               <!-- <b-button @click="btn">提示音</b-button> -->
               <!-- <easy-ring :open="open" :ring="ring" :src="music" /> -->
@@ -87,7 +105,7 @@
     <!--新增使用者-->
     <CreateAccountmModal
       v-if="showACreateModal"
-      @close-modal="showACreateModal =false"
+      @close-modal="showACreateModal = false"
       @reload="reload"
     />
     <!--編輯-->
@@ -118,11 +136,12 @@ import axios from "axios";
 // import 'bootstrap-vue/dist/bootstrap-vue.css';
 import CreateAccountmModal from "./views/CreateAccountm.vue";
 import EditAccountmModal from "./views/EditAccountm.vue";
+import Swal from 'sweetalert2'
 
 export default {
   components: {
     CreateAccountmModal,
-    EditAccountmModal
+    EditAccountmModal,
   },
   //inject: ["reload"], // 注入reload变量
   data() {
@@ -130,9 +149,9 @@ export default {
       isReloadData: true,
       tableClassList: [""],
       AccountmlistData: [],
-      showACreateModal:false,
-      showAEditModal:false,
-      Parentaccountid:'',
+      showACreateModal: false,
+      showAEditModal: false,
+      Parentaccountid: "",
       columns: [
         {
           class: "ttzc-header",
@@ -189,9 +208,42 @@ export default {
     //新增使用者
     EditAccountm(accountid) {
       this.showAEditModal = true;
-      this.Parentaccountid=accountid;
-      
+      this.Parentaccountid = accountid;
     },
+    //刪除使用者
+    async DeleteAccountmAPI(accountid){
+      const url = this.GLOBAL.ApiUrl;
+      await axios
+        .post(url + "/Accountm/DeleteAccountmById",JSON.stringify(accountid) )
+        .then((response) => {
+          this.loading = false;
+          if (response.data.isSuccess == true) {
+            Swal.fire("已刪除!", `該帳號${accountid}已被刪除`, "success");
+            this.reload();
+          } else {
+            this.error = response.data.Message;
+          }
+        })
+        .catch((error) => console.log(error));
+    },
+    //刪除使用者 sweetalert
+    DeleteAccountm(accountid) {
+      Swal.fire({
+        title: "確定要刪除嗎?",
+        text: "刪除可能影響賽局呈現!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "是的!我要刪除",
+        cancelButtonText: "取消",
+      }).then((result) => {
+        if (result.isConfirmed) {
+            this.DeleteAccountmAPI(accountid);         
+        }
+      });
+    },
+
     // //新增場次
     // CreateSession(tournamentid) {
     //   this.showSCreateModal = true;

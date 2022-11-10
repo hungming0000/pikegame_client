@@ -5,6 +5,7 @@
         <div class="ttzc-table-wrap">
           <b-button
             style="float: right; margin-bottom: 10px; z-index: 1"
+            type="is-primary is-light"
             @click="CreateTournament()" v-permission="'CreateTournament'"
             >新增比賽</b-button
           >

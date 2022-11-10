@@ -34,16 +34,21 @@
             </b-field>
             <label for="accountstyle">帳號類型</label>
             <b-field>
-            <b-select placeholder="請選擇帳號類型" v-model="accountstyle" onchange="onChange($event)" required>
-                <option
-                v-for="item in AccountgroupnameList"
-                :value="item.accountstyle"
-                :key="item.accountgroupname"
+              <b-select
+                placeholder="請選擇帳號類型"
+                v-model="accountstyle"
+                @change="accountstyleChange($event)"
+                required
               >
-                {{ item.accountgroupname }}
-              </option>
-            </b-select>
-        </b-field>
+                <option
+                  v-for="item in AccountgroupnameList"
+                  :value="item.accountstyle"
+                  :key="item.accountgroupname"
+                >
+                  {{ item.accountgroupname }}
+                </option>
+              </b-select>
+            </b-field>
             <br />
             <b-button type="submit" variant="success" @click="CreateAccountm"
               >儲存</b-button
@@ -121,8 +126,28 @@ export default {
         })
         .catch((error) => console.log(error));
     },
-    accountstyleChange(event) {
-      console.log(event.target.value);
+    accountstyleChange() {
+      console.log("11");
+    },
+  },
+  watch: {
+    accountstyle: {
+      handler: function () {
+        switch (this.accountstyle) {
+          case 0: //比賽制定者
+            this.accountgroupname = "比賽制定者";
+            break;
+          case 1: //裁判
+            this.accountgroupname = "裁判";
+            break;
+          case 2: //選手
+            this.accountgroupname = "選手";
+            break;
+          case 3: //觀眾
+            this.accountgroupname = "觀眾";
+            break;
+        }
+      },
     },
   },
   mounted() {
