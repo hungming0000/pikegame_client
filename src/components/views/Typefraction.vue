@@ -7,7 +7,7 @@
               <label for="blue_equipmentid">藍方分數</label>
               <input
                 class="form-styling"
-                type="text"
+                type="number"
                 name="bluefraction"
                 v-model="bluefraction"
                 placeholder=""
@@ -17,7 +17,7 @@
               <label for="red_equipmentid">紅方分數</label>
               <input
                 class="form-styling"
-                type="text"
+                type="number"
                 name="redfraction"
                 v-model="redfraction"
                 placeholder=""
@@ -46,11 +46,11 @@
   export default {   
     inject: ["reload"],
     name: "Modal-view",
-    props: ["sessionid"],
+    props: ["sessiondetialid","sessionid"],
     data: function () {
       return {
-        blue_equipmentid: "",     
-        red_equipmentid: "",        
+        bluefraction: 0,     
+        redfraction: 0,        
       };
     },
   
@@ -60,18 +60,21 @@
       },     
       //儲存分數
       SetFraction() {
+        console
         const url = this.GLOBAL.ApiUrl;
         axios
-          .post(url + "/Pikegame/Equipmentsetting/SetEquipmentsetting", {
-            sessionid: this.sessionid,            
-            blue_equipmentid: this.blue_equipmentid,  
-            red_equipmentid: this.red_equipmentid,            
+          .post(url + "/Pikegame/Sessiondetial/EditFraction", {
+            sessiondetialid: this.sessiondetialid,   
+            sessionid    : this.sessionid,        
+            bluefraction: this.bluefraction,  
+            redfraction: this.redfraction,            
           })
           .then((response) => {
             this.loading = false;
             if (response.data.isSuccess == true) {
-              document.documentElement.querySelector("#tfclose").click();
-              this.reload();              
+              // document.documentElement.querySelector("#tfclose").click();
+              this.$emit("reload")
+              // this.reload();              
             } else {
               this.error = response.data.Message;
             }

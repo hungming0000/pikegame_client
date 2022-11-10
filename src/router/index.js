@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import HomeView from '../components/Home-View.vue'
+import AccountmView from '../components/Accountm-View.vue'
 import LoginView from '../components/auth/Login-View.vue'
 import global_ from '../components/config/Global-View.vue'
 
@@ -22,6 +23,14 @@ const routes = [
     path: '/Home',
     name: 'Home',
     component: HomeView,
+    meta:{
+      keepAlive: true
+    }
+  },
+  {
+    path: '/Accountm',
+    name: 'Accountm',
+    component: AccountmView,
     meta:{
       keepAlive: true
     }

@@ -2,14 +2,14 @@
   <template>
   <div>
     <b-navbar toggleable="lg" type="dark" variant="info">
-      <b-navbar-brand href="#">首頁</b-navbar-brand>
+      <b-navbar-brand :to="{ path: '/Home' }">首頁</b-navbar-brand>
 
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
       <b-collapse id="nav-collapse" is-nav>
-        <!-- <b-navbar-nav>
-          <b-nav-item href="#">Link</b-nav-item>          
-        </b-navbar-nav> -->
+        <b-navbar-nav>
+          <b-nav-item :to="{ path: '/Accountm' }">帳號管理</b-nav-item>          
+        </b-navbar-nav>
 
         <!-- Right aligned nav items -->
         <b-navbar-nav class="ml-auto">

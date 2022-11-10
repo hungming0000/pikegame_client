@@ -138,14 +138,15 @@ export default {
                 sessionStorage.setItem("accountid",JSON.stringify(response.data.Data[0].accountid));
                 sessionStorage.setItem("accountname",JSON.stringify(response.data.Data[0].accountname));
                 sessionStorage.setItem("accountgroupname",JSON.stringify(response.data.Data[0].accountgroupname));
-
+                sessionStorage.setItem("accountstyle",JSON.stringify(response.data.Data[0].accountstyle));
+                
 
                 this.$router.push({ name: "Home" });
-                this.$buefy.toast.open({
-                  duration: 5000,
-                  message: "登入成功!",
-                  type: "is-success",
-                });
+                // this.$buefy.toast.open({
+                //   duration: 5000,
+                //   message: "登入成功!",
+                //   type: "is-success",
+                // });
               } else {
                 this.error = "錯誤的帳號或密碼。";
                 this.$buefy.toast.open({
@@ -187,7 +188,12 @@ export default {
           ];
       }
     },
-  },
+  },  
+  beforeRouteLeave(to, from, next) { 
+        // setting next meta.keepAlive to true 
+        to.meta.keepAlive = true; 
+        next(); 
+    } ,
   mounted() {
     this.refreshCode();
   },

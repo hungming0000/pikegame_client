@@ -5,7 +5,7 @@
         <div class="ttzc-table-wrap">
           <b-button
             style="float: right; margin-bottom: 10px; z-index: 1"
-            @click="CreateTournament()"
+            @click="CreateTournament()" v-permission="'CreateTournament'"
             >新增比賽</b-button
           >
           <!--@details-open="(row) => showDetail(row['tournamentid'])"
@@ -51,7 +51,7 @@
             >
               <b-button
                 @click="CreateSession(props.row.tournamentid)"
-                type="is-info is-light"
+                type="is-info is-light" v-permission="'CreateSession'"
               >
                 <b-icon
                   pack="fas"
@@ -65,7 +65,7 @@
                 ></b-button
               >
               <div class="nav">
-                <b-button @click="btn">提示音</b-button>
+                <!-- <b-button @click="btn">提示音</b-button> -->
                 <!-- <easy-ring :open="open" :ring="ring" :src="music" /> -->
               </div>
             </b-table-column>
@@ -85,6 +85,7 @@
                       type="is-danger"
                       style="float: right"
                       v-if="item.is_equipment_exist"
+                      v-permission="'EditEquipment'"
                     >
                       <b-icon
                         pack="fas"
@@ -100,6 +101,7 @@
                       @click="CreateEquipment(item.sessionid)"
                       type="is-danger"
                       style="float: right"
+                      v-permission="'CreateEquipment'"
                       v-else
                     >
                       <b-icon
@@ -113,6 +115,41 @@
                       ></b-button
                     >
                     <p>
+                      <section>
+                        <b-field>
+                            <b-radio-button v-model="item.mstatus"
+                                native-value="2"
+                                type="is-danger is-light is-outlined" >
+                                <template v-if="item.mstatus===2">
+                                  <b-icon icon="check"></b-icon>
+                                </template>
+                                <!-- <b-icon icon="close"></b-icon> -->
+                                <span>比賽結束</span>
+                            </b-radio-button>
+
+                            <b-radio-button v-model="item.mstatus"
+                                native-value="1"
+                                type="is-success is-light is-outlined">
+                                <template v-if="item.mstatus===1">
+                                  <b-icon icon="check"></b-icon>
+                                </template>
+                                <span>比賽開始</span>
+                            </b-radio-button>
+
+                            <b-radio-button v-model="item.mstatus"
+                                native-value="0"
+                                type="is-primary is-light is-outlined">
+                                <template v-if="item.mstatus===0">
+                                  <b-icon icon="check"></b-icon>
+                                </template>
+                                <span>尚未開始</span>   
+                            </b-radio-button>                              
+                        </b-field>
+                        <!-- <p class="content">
+                            <b>Selection:</b>
+                            {{ radioButton }}
+                        </p> -->
+                    </section>
                       <span class="ssn">
                         場次：{{ item.sessionname }}<br />
                       </span>
@@ -131,13 +168,7 @@
                           </b-icon>
                           藍方選手：{{ item.blue_account }}<br />
                         </span>
-                        <span
-                          style="
-                            margin-left: 250px;
-                            float: left;
-                            font-size: 25px;
-                          "
-                        >
+                        <span class="bas">
                           {{ item.bluefraction_sum }}<br />
                         </span>
                         <span style="margin-left: 225px">-</span>
@@ -152,13 +183,7 @@
                           </b-icon>
                           紅方選手：{{ item.red_account }}<br />
                         </span>
-                        <span
-                          style="
-                            margin-right: 250px;
-                            float: right;
-                            font-size: 25px;
-                          "
-                        >
+                        <span class="ras">
                           {{ item.redfraction_sum }}<br />
                         </span> </span
                       ><br /><br />
@@ -183,108 +208,7 @@
                 </div>
               </article>
             </template>
-          </b-table>
-          <!-- <table class="ttzc-table" id="ttzc_table">
-          <caption>          
-          </caption>
-          <colgroup>
-            <col class="col-zip" />
-            <col class="col-city" />
-            <col class="col-state" />
-            <col class="col-pcentvis" />
-            <col class="col-cumpcentvis" />
-            <col class="col-tothouse" />
-            <col class="col-totpop" />
-          </colgroup>
-          <thead class="ttzc-thead">
-            <tr class="ttzc-row">
-              <th
-                class="ttzc-header"
-                scope="col"
-                title="Click to sort numerically"
-              >
-                
-              </th>
-              <th
-                class="ttzc-header"
-                scope="col"
-                title="Click to sort numerically"
-              >
-                比賽名稱
-              </th>
-              <th
-                class="ttzc-header ttzc-city"
-                scope="col"
-                title="Click to sort alphabetically"
-              >
-                時間
-              </th>
-              <th
-                class="ttzc-header ttzc-state"
-                scope="col"
-                title="Click to sort alphabetically"
-              >
-                場次
-              </th>
-              <th
-                class="ttzc-header ttzc-pcentvis"
-                scope="col"
-                title="Click to sort numerically"
-              >
-                藍方
-              </th>
-              <th
-                class="ttzc-header ttzc-cumpcentvis"
-                scope="col"
-                title="Click to sort numerically"
-              >
-                紅方
-              </th>
-              <th
-                class="ttzc-header ttzc-tothouse"
-                scope="col"
-                title="Click to sort numerically"
-              >
-                裁判
-              </th>
-              <th
-                class="ttzc-header ttzc-totpop"
-                scope="col"
-                title="Click to sort numerically"
-              >
-                <i class="fa-solid fa-eye"></i>
-              </th>
-            </tr>
-          </thead>
-          <tbody class="ttzc-tbody">
-            <tr
-              class="ttzc-row"
-              v-for="item in listData"
-              :key="item.tournamentid"
-            >
-              <td> <button onclick="showDetailId=item.tournamentid">+</button></td>
-              <td class="ttzc-cell">{{ item.tournamentname }}</td>
-              <td class="ttzc-cell ttzc-city">
-                {{ formatDate(item.tournamentstartdate) }}~<br />{{
-                  formatDate(item.tournamentenddate)
-                }}
-              </td>
-              <td class="ttzc-cell ttzc-state">{{ item.sessionname }}</td>
-              <td class="ttzc-cell ttzc-pcentvis">{{ item.blue_account }}</td>
-              <td class="ttzc-cell ttzc-cumpcentvis">{{ item.red_account }}</td>
-              <td class="ttzc-cell ttzc-tothouse">{{ item.jugde }}</td>
-              <td class="ttzc-cell ttzc-totpop">
-                <div>
-                  <div class="save-btn">                    
-                    <b-button @click="Sessiondetail(item.sessionid)">
-                      <font-awesome-icon icon="eye" size="lg" />
-                    </b-button>
-                  </div>
-                </div>
-              </td>
-            </tr>
-          </tbody>         
-        </table> -->
+          </b-table>       
         </div>
       </div>
 
@@ -297,26 +221,36 @@
           @close-modal="showModal = false"
           v-bind:SessiondetailList="parSessiondetailList"
         />
+        <!--新增比賽-->
         <CreateTournamentModal
           v-if="showTCreateModal"
           @close-modal="showTCreateModal = false"
         />
+        <!--新增場次-->
         <CreateSessionModal
           v-if="showSCreateModal"
           @close-modal="showSCreateModal = false"
           v-bind:tournamentid="ParentTournamentid"
         />
+        <!--新增編號-->
         <CreateEquipmentModal
           v-if="showETcreateModal"
           @close-modal="showETcreateModal = false"
           v-bind:sessionid="Parentsessionid"
         />
-
+        <!--編輯編號-->
         <EditEquipmentModal
           v-if="showETEditModal"
           @close-modal="showETEditModal = false"
           :cparblue_equipmentid="parblue_equipmentid"
           :cparred_equipmentid="parred_equipmentid"
+        />
+        <TypefractionModal
+          v-if="showTypefractionModal"
+          @close-modal="showTypefractionModal = false"
+          @reload="reload"
+          :sessiondetialid="Parentsessiondetialid"
+          :sessionid="Parentsessionid"
         />
       </div>
     </div>
@@ -572,6 +506,19 @@ col-zip {
   height: 2px;
   border-top: solid white;
 }
+.bas {
+  margin-left: 250px;
+  float: left;
+  font-size: 25px;
+}
+.ras {
+  margin-right: 250px;
+  float: right;
+  font-size: 25px;
+}
+.b-radio.radio.button.is-selected{
+  z-index:0 !important;
+}
 </style>
 
 
@@ -594,7 +541,8 @@ import CreateTournamentModal from "./views/CreateTournament.vue";
 import CreateSessionModal from "./views/CreateSession.vue";
 import CreateEquipmentModal from "./views/CreateEquipment.vue";
 import EditEquipmentModal from "./views/EditEquipment.vue";
-import music from '../assets/bellalert.wav'
+import TypefractionModal from "./views/Typefraction.vue";
+import music from "../assets/bellalert.wav";
 //import music from '@/utils/y913.wav'../../assets/close-button.png
 
 export default {
@@ -604,7 +552,8 @@ export default {
     CreateSessionModal,
     CreateEquipmentModal,
     EditEquipmentModal,
-      },
+    TypefractionModal,
+  },
   //inject: ["reload"], // 注入reload变量
   data() {
     return {
@@ -615,6 +564,7 @@ export default {
       showSCreateModal: false,
       showETcreateModal: false,
       showETEditModal: false,
+      showTypefractionModal: false,
       listData: [],
       SessionData: [],
       TempData: {},
@@ -624,11 +574,14 @@ export default {
       parred_equipmentid: "",
       Parentsessionid: null,
       ParentTournamentid: null,
+      Parentsessiondetialid: "",
       //舊的 防止重複抓取
-      sessiondetialid: "",
+      oldsessiondetialid: "",
       //鈴聲
       open: false,
       ring: false,
+      //比賽狀態
+      radioButton: '',
       columns: [
         // {
         //   field: "tournamentid",
@@ -657,6 +610,21 @@ export default {
     };
   },
   methods: {
+    async GetAPIData(){
+      const url = this.GLOBAL.ApiUrl;
+      await axios
+        .post(url + "/Pikegame/Tournament/GetTournament", {})
+        .then((response) => {
+          this.loading = false;
+          if (response.data.isSuccess == true) {
+            this.listData = response.data.Data;
+            this.GetSessionForWeb();
+          } else {
+            this.error = response.data.Message;
+          }
+        })
+        .catch((error) => console.log(error));
+    },
     formatDate(dateString) {
       const date = new Date(dateString);
       // Then specify how you want your dates to be formatted
@@ -790,6 +758,9 @@ export default {
       return arr;
     },
     reload() {
+      this.showTypefractionModal=false
+      this.GetAPIData()
+
       this.isReloadData = false;
       this.$nextTick(() => {
         this.isReloadData = true;
@@ -836,13 +807,30 @@ export default {
       var team = str[0];
       var result = str[1];
       var sessiondetialid = str[2];
+      var sessionid = str[3];
 
-      //btn();
+      if (this.oldsessiondetialid != sessiondetialid) {
+        this.oldsessiondetialid = sessiondetialid;
+        this.Parentsessiondetialid = this.oldsessiondetialid;
+        this.Parentsessionid = sessionid;
+        if (team == "Red") {
+          this.btn();
+          this.showTypefractionModal = true;
+        } else if (team == "Blue") {
+          this.btn();
+          this.showTypefractionModal = true;
+        } else {
+          //收到服务器信息，心跳重置 2022/11/04 開啟才會有心跳
+          //this.reset();
+        }
+      } else {
+        console.log(this.oldsessiondetialid);
+      }
+
       console.log("team" + team);
       console.log("result" + result);
-      console.log("sessiondetialid" + sessiondetialid);
 
-      //收到服务器信息，心跳重置 2022/11/04 開啟才會有心跳
+      //收到服务器信息，心跳重置 2022/11/04 開啟才會有心跳 (測試會先關閉)
       //this.reset();
     },
     websocketsend(Data) {
@@ -909,27 +897,22 @@ export default {
       // this.open = true ;
       // this.ring = true;
       const audio = new Audio(music);
-      audio.addEventListener('canplaythrough', () => {
+
+      audio.addEventListener("canplaythrough", () => {
         audio.play();
       });
-    }
+    },
   },
+  // beforeRouteLeave(to, from, next) {
+  //            // 设置下一个路由的 meta
+  //           to.meta.keepAlive = true;  // 让 A 缓存，即不刷新
+  //           next();
+  //       },
   mounted() {
-    const url = this.GLOBAL.ApiUrl;
-    axios
-      .post(url + "/Pikegame/Tournament/GetTournament", {})
-      .then((response) => {
-        this.loading = false;
-        if (response.data.isSuccess == true) {
-          this.listData = response.data.Data;
-          this.GetSessionForWeb();
-        } else {
-          this.error = response.data.Message;
-        }
-      })
-      .catch((error) => console.log(error));
+    this.GetAPIData()
   },
   created() {
+    //console.log("ReNew")
     this.initWebSocket();
   },
   destroyed() {
