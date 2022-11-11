@@ -34,7 +34,7 @@
           </div>
           <table class="container">    
             <tr>
-              <th v-for="column in Object.keys(SessiondetailList[0])" :key="column">
+              <th v-for="column in Object.keys(SessiondetailList[0])" :key="column" style="color:white">
               {{column}}
               </th>
             </tr>      

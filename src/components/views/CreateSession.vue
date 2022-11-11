@@ -54,7 +54,7 @@
             <b-field style="width:50%;margin-left: 25%" >
               <b-select
                 placeholder="請選擇紅方選手"
-                v-model="blue_accountid"                
+                v-model="red_accountid"                
                 required
                 expanded
               >

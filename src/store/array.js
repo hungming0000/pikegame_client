@@ -8,7 +8,7 @@ export function checkArray(key){
         arr=['CreateTournament','CreateSession','CreateEquipment','EditEquipment','Sessiondetail','CreateAccountm','EditAccountm','DeleteAccountm','clickrb'];
         break;
         case '1': //裁判
-        arr=['Sessiondetail','childclickrb'];
+        arr=['Sessiondetail','clickrb'];
         break;
         case '2': //選手
         arr=['Sessiondetail','childclickrb'];

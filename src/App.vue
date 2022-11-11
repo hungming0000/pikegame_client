@@ -1,9 +1,9 @@
 <template>
   <div id="app">
-    <div v-if="$route.meta.keepAlive">
-      <HeaderView />
+    <div v-if="header_show">
+      <HeaderView :username="paccountname"/>
     </div>
-    <router-view></router-view>
+    <router-view v-on:publuc_header="publuc_header"></router-view>
   </div>
 </template>
 <script>
@@ -18,12 +18,20 @@ export default {
   data() {
     return {
       isRouterAlive: true,
+      //判斷header
+      header_show:true,
+      paccountname:'',
     };
   },
   components: {
     HeaderView,
   },
   methods: {
+    //是否顯示header
+    publuc_header:function(bool){
+      this.header_show=bool;
+    }
+
     // reload() {
     //   this.isRouterAlive = false;
     //   this.$nextTick(() => {
@@ -31,6 +39,18 @@ export default {
     //   });
     // },
   },
+  created() {
+    this.paccountname= sessionStorage.getItem("accountname");
+
+  },
+  watch: {
+   $route(to, from) {
+     if (from.name === "Login" && to.name === "Home") {
+       // 在这里刷新
+       this.$router.go(0);
+     }
+   },
+ },
 };
 </script>
 <style>

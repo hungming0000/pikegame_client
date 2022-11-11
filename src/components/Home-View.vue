@@ -28,6 +28,7 @@
               label="比賽名稱"
               :th-attrs="columnThAttrs"
               :td-attrs="columnTdAttrs"
+              :searchable=true
               v-slot="props"
             >
               {{ props.row.tournamentname }}
@@ -38,6 +39,7 @@
               label="比賽日期"
               :td-attrs="columnTdAttrs"
               :th-attrs="columnThAttrs"
+              :searchable=true
               v-slot="props"
             >
               {{ props.row.tournamentdate }}
@@ -81,7 +83,7 @@
                 <figure class="media-left"></figure>
                 <div class="media-content">
                   <div class="content">
-                    <span v-if="item.mstatus==1">
+                    <span v-if="item.mstatus==1||item.mstatus==0">
                     <b-button
                       @click="EditEquipment(item.sessionid)"
                       type="is-danger"
@@ -330,24 +332,10 @@ table {
   table-layout: fixed;
   border-collapse: collapse;
 }
-.mockup-header {
-  margin-top: 100px;
-  text-align: center;
-}
 .ttzc-table-wrap {
   margin: 0 auto;
   text-align: center;
   width: 100%;
-}
-.age-row {
-  vertical-align: top;
-}
-.avgage {
-  margin-top: 10px;
-}
-.divcell {
-  padding: 0;
-  margin-bottom: 5px;
 }
 .ttzc-table {
   border: 2px solid #bcbec0;
@@ -387,35 +375,14 @@ table {
 .ttzc-row:not(:last-child) {
   border-bottom: 1px solid #bcbec0;
 }
-.cell-empty {
-  color: transparent;
-}
-.bench-name,
-.comp-name {
-  width: 120px;
-  margin: 0 auto;
-  word-wrap: normal;
-}
 .ttzc-cell:first-child,
 .ttzc-header:first-child {
-  text-align: left;
+  text-align: center;
   padding-left: 14px;
 }
 th {
   background-color: #2a3c68 !important;
-}
-.col-zip {
-  max-width: 120px;
-  min-width: 120px;
-  width: 120px;
-}
-.ttzc-city {
-  text-align: right !important;
-  padding-right: 5px !important;
-}
-.ttzc-popgrow {
-  text-align: right !important;
-  padding-right: 14px !important;
+  align-items: center !important;
 }
 .ttzc-row:nth-child(even) {
   background-color: #ededf6;
@@ -518,25 +485,20 @@ th {
 .ttzc-tfoot:hover .ttzc-cell:not(.ttzc-avgs):hover {
   color: #fce6a3;
 }
-.ttzc-avgs {
-  font-variant: small-caps;
-  letter-spacing: 2px;
-}
-col-zip {
-  border-right: 2px solid black !important;
-}
 .detail {
   background-color: #dbf6fd !important;
 }
 .media-content {
   text-align: initial !important;
 }
+/*比賽時間 */
 .sst {
   color: #4a4a4a;
   opacity: 0.7;
   font-size: 18px;
   line-height: 16px;
 }
+/*場次 */
 .ssn {
   color: #4a4a4a;
   opacity: 0.7;
@@ -558,23 +520,17 @@ col-zip {
   float: right;
   font-size: 25px;
 }
-.b-radio.radio.button.is-selected{
-  z-index:0 !important;
+.b-radio.radio.button.is-selected {
+  z-index: 0 !important;
 }
-
+.th-wrap{
+  justify-content:center;
+}
 </style>
 
 
 <script>
-/**
- * @name makeAllSortable
- * @description Makes the specified tables sortable. If no arguments are passed
- * it will make all tables on the page it is run on sortable.
- * @param {string} [tableClass] - Class name for the table or tables you want to
- * be sortable. If undefined function will instead look for all table elements
- * @param {HTMLElement} [parent=document.body] - The parent element of the tables
- * specified in the tableClass argument
- */
+
 import axios from "axios";
 // import 'bootstrap/dist/css/bootstrap.css';
 // import 'bootstrap-vue/dist/bootstrap-vue.css';
@@ -586,7 +542,7 @@ import CreateEquipmentModal from "./views/CreateEquipment.vue";
 import EditEquipmentModal from "./views/EditEquipment.vue";
 import TypefractionModal from "./views/Typefraction.vue";
 import music from "../assets/bellalert.wav";
-import Swal from 'sweetalert2'
+import Swal from "sweetalert2";
 
 export default {
   components: {
@@ -620,11 +576,9 @@ export default {
       Parentsessiondetialid: "",
       //舊的 防止重複抓取
       oldsessiondetialid: "",
-      //鈴聲
-      open: false,
-      ring: false,
+
       //比賽狀態
-      radioButton: '',
+      radioButton: "",
       columns: [
         // {
         //   field: "tournamentid",
@@ -653,7 +607,7 @@ export default {
     };
   },
   methods: {
-    async GetAPIData(){
+    async GetAPIData() {
       const url = this.GLOBAL.ApiUrl;
       await axios
         .post(url + "/Pikegame/Tournament/GetTournament", {})
@@ -708,13 +662,13 @@ export default {
       this.ParentTournamentid = tournamentid;
     },
     //修改比賽狀態
-    async SetSessionmstatus(mstatus,mstatusname,sessionid){
+    async SetSessionmstatus(mstatus, mstatusname, sessionid) {
       const url = this.GLOBAL.ApiUrl;
       await axios
-        .post(url + "/Pikegame/Session/SetSessionmstatus",{
-          mstatus:mstatus,
-          sessionid:sessionid
-        } )
+        .post(url + "/Pikegame/Session/SetSessionmstatus", {
+          mstatus: mstatus,
+          sessionid: sessionid,
+        })
         .then((response) => {
           this.loading = false;
           if (response.data.isSuccess == true) {
@@ -722,6 +676,8 @@ export default {
             this.reload();
           } else {
             this.error = response.data.Message;
+            Swal.fire("修改失敗!", `${this.error}`, "error");
+            this.reload();
           }
         })
         .catch((error) => console.log(error));
@@ -795,18 +751,19 @@ export default {
         // colspan: 10,
         //class: 'has-text-weight-bold ttzc-header',
         class: "has-text-weight-bold ",
-        style: {
-          "text-align": "center !important",
-        },
+        // style: {
+        //   "text-align": "center !important",
+        // },
       };
     },
     //table th 格式
     columnThAttrs() {
       return {
-        class: "ttzc-header",
+        class: "ttzc-header ",
         style: {
-          "text-align": "center !important;width:50px!important;",
+          "text-align": "center !important",
           color: "white",
+          
         },
       };
     },
@@ -819,8 +776,8 @@ export default {
       return arr;
     },
     reload() {
-      this.showTypefractionModal=false
-      this.GetAPIData()
+      this.showTypefractionModal = false;
+      this.GetAPIData();
 
       this.isReloadData = false;
       this.$nextTick(() => {
@@ -965,21 +922,18 @@ export default {
       });
     },
     //切換比賽狀態
-    clickrb(mstatus,sessionid){
-     
-     
-
-      var mstatusname='';
+    clickrb(mstatus, sessionid) {
+      var mstatusname = "";
       switch (mstatus) {
-            case 0: //尚未比賽狀態
-            mstatusname = "尚未比賽狀態";
-            break;
-            case 1: //比賽開始狀態
-            mstatusname = "比賽開始狀態";
-            break;
-            case 2: //比賽結束狀態
-            mstatusname = "比賽結束狀態";
-            break;
+        case 0: //尚未比賽狀態
+          mstatusname = "尚未比賽狀態";
+          break;
+        case 1: //比賽開始狀態
+          mstatusname = "比賽開始狀態";
+          break;
+        case 2: //比賽結束狀態
+          mstatusname = "比賽結束狀態";
+          break;
       }
 
       Swal.fire({
@@ -993,25 +947,18 @@ export default {
         cancelButtonText: "取消",
       }).then((result) => {
         if (result.isConfirmed) {
-            this.SetSessionmstatus(mstatus,mstatusname,sessionid);         
-        }
-        else{
+          this.SetSessionmstatus(mstatus, mstatusname, sessionid);
+        } else {          
           this.reload();
         }
       });
-
-    }
-  },
-  // beforeRouteLeave(to, from, next) {
-  //            // 设置下一个路由的 meta
-  //           to.meta.keepAlive = true;  // 让 A 缓存，即不刷新
-  //           next();
-  //       },
+    },
+  }, 
   mounted() {
-    this.GetAPIData()
+    this.GetAPIData();
   },
   created() {
-    //console.log("ReNew")
+    this.$emit("publuc_header", true);
     this.initWebSocket();
   },
   destroyed() {
@@ -1022,159 +969,8 @@ export default {
     if (this.formatDate) {
       clearInterval(this.formatDate); // 在Vue实例销毁前，清除时间定时器
     }
-  },
+  },  
 };
 
-function makeAllSortable(tableClass, parent) {
-  parent = document.getElementById(parent) || document.body;
 
-  const table =
-    typeof tableClass !== "undefined"
-      ? parent.getElementsByClassName(tableClass)
-      : parent.getElementsByTagName("table");
-
-  let numTables = table.length;
-
-  // Run through every table on the page and make them all sortable
-  while (--numTables >= 0) {
-    makeSortable(table[numTables]);
-  }
-
-  /**
-   * @name fixComparison
-   * @description Fixes to values for comparison in sortTable
-   *
-   * @param {string} a - First item being compared
-   * @param {string} b - Second item being compared
-   * @return {string[]} The adjusted a and b fixed for comparison
-   */
-  function fixComparison(a, b) {
-    let diff;
-
-    if (a.length !== b.length) {
-      if (a.length > b.length) {
-        diff = a.length - b.length;
-        for (let k = 0; k < diff; k++) {
-          b = "0" + b;
-        }
-      } else {
-        diff = b.length - a.length;
-        for (let k = 0; k < diff; k++) {
-          a = "0" + a;
-        }
-      }
-    }
-
-    return [a, b];
-  }
-
-  /**
-   * @name sortTable
-   * @description Takes a given table and column, as well as whether or not the
-   * column has already been reversed, as input, and then sorts the table column
-   *
-   * @param {HTMLElement} table
-   * @param {HTMLElement} col
-   * @param {number} reverse - 1 for true 0 for false
-   * @todo Refactor logic for optimization & implement a datetime sorting solution
-   */
-  function sortTable(table, col, reverse) {
-    const T_BODY = table.tBodies[0], // ignore `<thead>` and `<tfoot>` rows
-      IS_NUM = /^[0-9]*\.?[0-9]+$/;
-
-    let tRows = Array.prototype.slice.call(T_BODY.rows, 0); // Put rows into array
-
-    reverse = -(+reverse || -1);
-
-    tRows = tRows.sort(function (a, b) {
-      // Sort rows
-      let tempA = a.cells[col].textContent.trim(),
-        tempB = b.cells[col].textContent.trim();
-
-      if (tempA.slice(-1) === "%" || tempB.slice(-1) === "%") {
-        if (tempA.slice(-1) === "%") {
-          tempA = tempA.slice(0, tempA.length - 1);
-        }
-        if (tempB.slice(-1) === "%") {
-          tempB = tempB.slice(0, tempB.length - 1);
-        }
-        [tempA, tempB] = fixComparison(tempA, tempB);
-      } else if (tempA.substr(0, 1) === "$" || tempB.substr(0, 1) === "$") {
-        if (tempA.substr(0, 1) === "$") {
-          tempA = tempA.slice(1, tempA.length);
-        }
-        if (tempB.substr(0, 1) === "$") {
-          tempB = tempB.slice(1, tempB.length);
-        }
-        [tempA, tempB] = fixComparison(tempA, tempB);
-      } else if (
-        IS_NUM.test(stripCommas(tempA)) ||
-        IS_NUM.test(stripCommas(tempB))
-      ) {
-        if (IS_NUM.test(stripCommas(tempA))) {
-          tempA = stripCommas(tempA) + "";
-        }
-        if (IS_NUM.test(stripCommas(tempB))) {
-          tempB = stripCommas(tempB) + "";
-        }
-        [tempA, tempB] = fixComparison(tempA, tempB);
-      }
-
-      return reverse * tempA.localeCompare(tempB);
-    });
-
-    for (let i = 0; i < tRows.length; ++i) {
-      T_BODY.appendChild(tRows[i]); // append each row in order
-    }
-  }
-
-  /**
-   * @name makeSortable
-   * @description Makes a table sortable
-   *
-   * @param {HTMLElement} table - The table being sorted
-   */
-  function makeSortable(table) {
-    let th = table.tHead,
-      i;
-
-    th && (th = th.rows[0]) && (th = th.cells);
-
-    if (th) {
-      i = th.length;
-    } else {
-      return; // if no `<thead>` then do nothing
-    }
-
-    while (--i >= 0) {
-      (function (i) {
-        var dir = 1;
-        th[i].addEventListener("click", function () {
-          sortTable(table, i, (dir = 1 - dir));
-        });
-      })(i);
-    }
-  }
-}
-
-/**
- * @name stripCommas
- * @description Takes a string of a number with commas in it and strips the
- * commas out of the string, returning the number value.
- *
- * @param {string} x - A string representing a number that is displayed with
- * commas
- *
- * @return {number} The number value of the string with the commas
- * stripped
- */
-function stripCommas(x) {
-  return (x + "").replace(/,/g, "") * 1;
-}
-
-window.onload = function () {
-  makeAllSortable();
-  // Could also be makeAllSortable('ttzc-table', 'ttzc-tile')
-  // if I just wanted the tables with that class inside that element)
-};
 </script>

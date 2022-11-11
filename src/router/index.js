@@ -16,7 +16,7 @@ const routes = [
     name: 'Login',
     component: LoginView,
     meta:{
-      keepAlive: false
+      keepAlive: true
     }
   },
   {
