@@ -194,6 +194,18 @@
                             {{ radioButton }}
                         </p> -->
                     </section>
+                      <span v-for="eitem in filterEquipmentDataMethod(item.sessionid)"
+                      :key="eitem.sessionid"
+                      > 
+                      <span v-if="eitem.team=='Blue'" class="ssn">
+                        藍方設備編號：{{ eitem.equipmentid }}
+                      </span>                      
+                      <span v-if="eitem.team=='Red'" class="ssn">
+                        紅方設備編號：{{ eitem.equipmentid }}
+                      </span>
+                      <br />
+                      </span>
+
                       <span class="ssn">
                         場次：{{ item.sessionname }}<br />
                       </span>
@@ -566,6 +578,7 @@ export default {
       showTypefractionModal: false,
       listData: [],
       SessionData: [],
+      EquipmentData: [],
       TempData: {},
       parSessiondetailList: [],
       parEquipmentList: [],
@@ -607,6 +620,7 @@ export default {
     };
   },
   methods: {
+    //取得比賽列表
     async GetAPIData() {
       const url = this.GLOBAL.ApiUrl;
       await axios
@@ -616,6 +630,7 @@ export default {
           if (response.data.isSuccess == true) {
             this.listData = response.data.Data;
             this.GetSessionForWeb();
+            this.GetAllEquipmentsetting();
           } else {
             this.error = response.data.Message;
           }
@@ -646,6 +661,21 @@ export default {
           this.loading = false;
           if (response.data.isSuccess == true) {
             this.SessionData = response.data.Data.slice();
+          } else {
+            this.error = response.data.Message;
+          }
+        })
+        .catch((error) => console.log(error));
+    },
+    //取得設備編號
+    GetAllEquipmentsetting() {
+      const url = this.GLOBAL.ApiUrl;
+      axios
+        .post(url + "/Pikegame/Equipmentsetting/GetAllEquipmentsetting", {})
+        .then((response) => {
+          this.loading = false;
+          if (response.data.isSuccess == true) {
+            this.EquipmentData = response.data.Data.slice();
           } else {
             this.error = response.data.Message;
           }
@@ -775,6 +805,15 @@ export default {
 
       return arr;
     },
+    //過濾設備編號
+    filterEquipmentDataMethod(sid) {
+      var arr = this.EquipmentData.filter(function (element) {
+        return element.sessionid == sid;
+      });
+
+      return arr;
+    },
+
     reload() {
       this.showTypefractionModal = false;
       this.GetAPIData();
@@ -849,7 +888,7 @@ export default {
       console.log("result" + result);
 
       //收到服务器信息，心跳重置 2022/11/04 開啟才會有心跳 (測試會先關閉)
-      //this.reset();
+      this.reset();
     },
     websocketsend(Data) {
       this.websock.send(Data); //这里可以自己跟后端约定

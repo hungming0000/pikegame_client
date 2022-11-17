@@ -45,12 +45,9 @@ export default {
   inject: ["reload"],
   name: "Modal-view",
   props: ["cparblue_equipmentid", "cparred_equipmentid"],
-  created() {
-    console.log("hahahah" + this.cparblue_equipmentid);
+  created() {    
     this.blue_equipmentid = this.cparblue_equipmentid;
-    this.red_equipmentid = this.cparred_equipmentid;
-    console.log(this.blue_equipmentid);
-    console.log(this.red_equipmentid);
+    this.red_equipmentid = this.cparred_equipmentid;    
   },
   data() {
     return {

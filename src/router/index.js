@@ -4,6 +4,8 @@ import HomeView from '../components/Home-View.vue'
 import AccountmView from '../components/Accountm-View.vue'
 import LoginView from '../components/auth/Login-View.vue'
 import global_ from '../components/config/Global-View.vue'
+import WisdomGunheadView from '../components/views/FunctionWisdomGunhead.vue'
+
 
 
 Vue.use(VueRouter)
@@ -31,6 +33,14 @@ const routes = [
     path: '/Accountm',
     name: 'Accountm',
     component: AccountmView,
+    meta:{
+      keepAlive: true
+    }
+  },
+  {
+    path: '/WisdomGunhead',
+    name: 'WisdomGunhead',
+    component: WisdomGunheadView,
     meta:{
       keepAlive: true
     }

@@ -10,6 +10,9 @@
         <b-navbar-nav>
           <b-nav-item :to="{ path: '/Accountm' }">帳號管理</b-nav-item>
         </b-navbar-nav>
+        <b-navbar-nav>
+          <b-nav-item :to="{ path: '/WisdomGunhead' }">功能測試</b-nav-item>
+        </b-navbar-nav>
 
         <!-- Right aligned nav items -->
         <b-navbar-nav class="ml-auto">
