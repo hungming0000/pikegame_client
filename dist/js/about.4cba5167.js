@@ -1,0 +1,2 @@
+"use strict";(self["webpackChunkpikegame_client"]=self["webpackChunkpikegame_client"]||[]).push([[443],{15399:function(e,n,t){t.r(n),t.d(n,{default:function(){return c}});var u=function(){var e=this;e._self._c;return e._m(0)},i=[function(){var e=this,n=e._self._c;return n("div",{staticClass:"about"},[n("h1",[e._v("This is an about page")])])}],s=t(1001),a={},l=(0,s.Z)(a,u,i,!1,null,null,null),c=l.exports}}]);
+//# sourceMappingURL=about.4cba5167.js.map
