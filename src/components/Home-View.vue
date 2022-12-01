@@ -83,7 +83,26 @@
                 <figure class="media-left"></figure>
                 <div class="media-content">
                   <div class="content">
-                    <span v-if="item.mstatus==1||item.mstatus==0">
+                    <span v-if="item.mstatus==0">
+                    <b-button
+                      @click="EditSession(item.sessionid)"
+                      type="is-danger"
+                      style="float: right"                     
+                      v-permission="'EditSession'"
+                    >
+                      <b-icon
+                        pack="fas"
+                        icon="plus"
+                        size="is-small"
+                        style="display: inline-block"
+                      ></b-icon>
+                      <span style="margin-left: 5px; display: inline-block"
+                        >編輯場次資訊</span
+                      ></b-button
+                    >
+                  </span>
+                    
+                    <!-- <span v-if="item.mstatus==1||item.mstatus==0">
                     <b-button
                       @click="EditEquipment(item.sessionid)"
                       type="is-danger"
@@ -118,7 +137,7 @@
                         >新增槍頭設備編號</span
                       ></b-button
                     >
-                  </span>
+                  </span> -->
                     <p>
                       <section>
                         <b-field >
@@ -194,7 +213,7 @@
                             {{ radioButton }}
                         </p> -->
                     </section>
-                      <span v-for="eitem in filterEquipmentDataMethod(item.sessionid)"
+                      <!-- <span v-for="eitem in filterEquipmentDataMethod(item.sessionid)"
                       :key="eitem.sessionid"
                       > 
                       <span v-if="eitem.team=='Blue'" class="ssn">
@@ -204,7 +223,7 @@
                         紅方設備編號：{{ eitem.equipmentid }}
                       </span>
                       <br />
-                      </span>
+                      </span> -->
 
                       <span class="ssn">
                         場次：{{ item.sessionname }}<br />
@@ -287,6 +306,12 @@
           v-if="showSCreateModal"
           @close-modal="showSCreateModal = false"
           v-bind:tournamentid="ParentTournamentid"
+        />
+        <!--新增場次-->
+        <EditSessionModal
+          v-if="showSEditModal"
+          @close-modal="showSEditModal = false"
+          v-bind:sessionid="Parentsessionid"
         />
         <!--新增編號-->
         <CreateEquipmentModal
@@ -535,14 +560,13 @@ th {
 .b-radio.radio.button.is-selected {
   z-index: 0 !important;
 }
-.th-wrap{
-  justify-content:center;
+.th-wrap {
+  justify-content: center;
 }
 </style>
 
 
 <script>
-
 import axios from "axios";
 // import 'bootstrap/dist/css/bootstrap.css';
 // import 'bootstrap-vue/dist/bootstrap-vue.css';
@@ -550,6 +574,7 @@ import axios from "axios";
 import DetialModal from "./views/DetialModal.vue";
 import CreateTournamentModal from "./views/CreateTournament.vue";
 import CreateSessionModal from "./views/CreateSession.vue";
+import EditSessionModal from "./views/EditSession.vue";
 import CreateEquipmentModal from "./views/CreateEquipment.vue";
 import EditEquipmentModal from "./views/EditEquipment.vue";
 import TypefractionModal from "./views/Typefraction.vue";
@@ -561,6 +586,7 @@ export default {
     DetialModal,
     CreateTournamentModal,
     CreateSessionModal,
+    EditSessionModal,
     CreateEquipmentModal,
     EditEquipmentModal,
     TypefractionModal,
@@ -573,6 +599,7 @@ export default {
       showModal: false,
       showTCreateModal: false,
       showSCreateModal: false,
+      showSEditModal: false,
       showETcreateModal: false,
       showETEditModal: false,
       showTypefractionModal: false,
@@ -691,6 +718,11 @@ export default {
       this.showSCreateModal = true;
       this.ParentTournamentid = tournamentid;
     },
+    //編輯場次
+    EditSession(sessionid) {
+      this.showSEditModal = true;
+      this.Parentsessionid = sessionid;
+    },
     //修改比賽狀態
     async SetSessionmstatus(mstatus, mstatusname, sessionid) {
       const url = this.GLOBAL.ApiUrl;
@@ -793,7 +825,6 @@ export default {
         style: {
           "text-align": "center !important",
           color: "white",
-          
         },
       };
     },
@@ -828,8 +859,8 @@ export default {
       //初始化weosocket
       //wss://localhost:44301/api/NotifyWebSocket
       //var accountid = sessionStorage.getItem('accountid');
-
-      const wsuri = "wss://www.hungminginfo.com/pikegame_API/api/NotifyWebSocket";
+      const wsuri = "wss://localhost:44302/api/NotifyWebSocket";
+      //const wsuri = "wss://www.hungminginfo.com/pikegame_API/api/NotifyWebSocket";
       this.websock = new WebSocket(wsuri);
       // 客户端接收服务端数据时触发
       this.websock.onmessage = this.websocketonmessage;
@@ -987,12 +1018,12 @@ export default {
       }).then((result) => {
         if (result.isConfirmed) {
           this.SetSessionmstatus(mstatus, mstatusname, sessionid);
-        } else {          
+        } else {
           this.reload();
         }
       });
     },
-  }, 
+  },
   mounted() {
     this.GetAPIData();
   },
@@ -1008,8 +1039,6 @@ export default {
     if (this.formatDate) {
       clearInterval(this.formatDate); // 在Vue实例销毁前，清除时间定时器
     }
-  },  
+  },
 };
-
-
 </script>
