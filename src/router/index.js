@@ -5,6 +5,7 @@ import AccountmView from '../components/Accountm-View.vue'
 import LoginView from '../components/auth/Login-View.vue'
 import global_ from '../components/config/Global-View.vue'
 import WisdomGunheadView from '../components/views/FunctionWisdomGunhead.vue'
+import HomeIndexView from '../components/HomeIndex-View.vue'
 
 
 
@@ -14,9 +15,17 @@ Vue.prototype.GLOBAL = global_//掛載到Vue例項上面
 
 const routes = [
   {
-    path: '/',
+    path: '/Login',
     name: 'Login',
     component: LoginView,
+    meta:{
+      keepAlive: true
+    }
+  },
+  {
+    path: '/',
+    name: 'HomeIndex',
+    component: HomeIndexView,
     meta:{
       keepAlive: true
     }

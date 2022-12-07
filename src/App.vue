@@ -44,7 +44,7 @@ export default {
 
   },
   watch: {
-   $route(to, from) {
+   $route(to, from) {    
      if (from.name === "Login" && to.name === "Home") {
        // 在这里刷新
        this.$router.go(0);

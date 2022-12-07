@@ -164,8 +164,8 @@ export default {
 
           //this.emptyFields = true;
         } else {
-          console.log(this.identifyCodeInput);
-          console.log(this.identifyCode);
+          // console.log(this.identifyCodeInput);
+          // console.log(this.identifyCode);
           this.$buefy.toast.open({
             duration: 5000,
             message: `驗證碼錯誤。`,

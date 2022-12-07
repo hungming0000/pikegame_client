@@ -859,8 +859,8 @@ export default {
       //初始化weosocket
       //wss://localhost:44301/api/NotifyWebSocket
       //var accountid = sessionStorage.getItem('accountid');
-      //const wsuri = "wss://localhost:44302/api/NotifyWebSocket";
-      const wsuri = "wss://www.hungminginfo.com/pikegame_API/api/NotifyWebSocket";
+      const wsuri = "wss://localhost:44302/api/NotifyWebSocket";
+      //const wsuri = "wss://www.hungminginfo.com/pikegame_API/api/NotifyWebSocket";
       this.websock = new WebSocket(wsuri);
       // 客户端接收服务端数据时触发
       this.websock.onmessage = this.websocketonmessage;

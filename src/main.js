@@ -21,6 +21,9 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { checkArray } from "./store/array.js"
+import VueAwesomeSwiper from 'vue-awesome-swiper'
+import 'swiper/css/swiper.css'
+
 
 library.add(faCheck, faCheckCircle, faInfoCircle, faExclamationTriangle, faExclamationCircle,
   faArrowUp, faAngleRight, faAngleLeft, faAngleDown, faChevronRight, faChevronDown,
@@ -43,6 +46,7 @@ Vue.use(Buefy, {
   defaultIconComponent: 'vue-fontawesome',
   defaultIconPack: 'fas',
 });
+Vue.use(VueAwesomeSwiper);
 // Vue.use(BootstrapVue);
 Vue.directive("permission", {
   inserted(el, binding) {
