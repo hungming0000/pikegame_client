@@ -50,7 +50,7 @@
 
             <b-field style="width:50%;margin-left: 25%">
               <b-select
-                placeholder="請選擇場次"
+                placeholder="請選擇擊中方"
                 v-model="team"                
                 required
                 expanded
@@ -92,6 +92,7 @@
   <script>
   import axios from "axios";
   import Swal from 'sweetalert2'
+  import moment from "moment";
   export default {
     data() {
       const data = [
@@ -185,13 +186,15 @@
       //擊中槍頭
       SetWisdomGunhead() {
         const url = this.GLOBAL.ApiUrl;
+        console.log(Date.now())
         axios
           .post(
             url + "/Pikegame/WinFormPost/SetWisdomGunhead",
             {
                 sessionid:this.sessionid,
                 redhit:this.redhit,
-                bluehit:this.bluehit
+                bluehit:this.bluehit,
+                sessiondetialtime:moment(new Date()).format("yyyy-MM-DD HH:mm:ss"),
             }
           )
           .then((response) => {

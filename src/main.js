@@ -22,8 +22,10 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { checkArray } from "./store/array.js"
 import VueAwesomeSwiper from 'vue-awesome-swiper'
-import 'swiper/css/swiper.css'
+import 'swiper/css/swiper.css'//輪播用
+import LazyTube from "vue-lazytube";//影片播放
 
+Vue.use(LazyTube);
 
 library.add(faCheck, faCheckCircle, faInfoCircle, faExclamationTriangle, faExclamationCircle,
   faArrowUp, faAngleRight, faAngleLeft, faAngleDown, faChevronRight, faChevronDown,
@@ -45,6 +47,17 @@ new Vue({
 Vue.use(Buefy, {
   defaultIconComponent: 'vue-fontawesome',
   defaultIconPack: 'fas',
+  // customIconPacks: {
+  //   fas: {
+  //     sizes: {
+  //       default: "lg",
+  //       "is-small": "1x",
+  //       "is-medium": "2x",
+  //       "is-large": "3x"
+  //     },
+  //     iconPrefix: ""
+  //   }
+  // }
 });
 Vue.use(VueAwesomeSwiper);
 // Vue.use(BootstrapVue);

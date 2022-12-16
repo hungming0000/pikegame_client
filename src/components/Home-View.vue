@@ -944,7 +944,7 @@ export default {
         //新连接
         that.initWebSocket();
         that.lockReconnect = false;
-      }, 5000);
+      }, 1000);
     },
     reset() {
       //重置心跳

@@ -62,7 +62,7 @@ export default {
         },
         // 设置自动轮播
         autoplay: {
-          delay: 500000 // 5秒切换一次
+          delay: 50000 // 5秒切换一次
         },
         // 设置轮播可循环
         loop: true
