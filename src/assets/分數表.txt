@@ -1,0 +1,53 @@
+select * from crosstab (
+ 'select player,rownum,redfraction from (select (
+		            SELECT accountname
+		            FROM accountm AS a
+		            WHERE a.accountid = t1.red_accountid
+		            ) AS player, row_number() over (ORDER BY sessiondetialid)as rownum  ,case redfraction when 0 then ''0'' else  redfraction||''(''
+					||
+					case redhitposition when ''0'' then ''頭'' when ''1'' then ''軀幹'' when ''2'' then ''四肢'' when ''3'' then ''掉槍'' end 
+					
+					||
+					'')'' end as redfraction
+					from session t1
+					left join  sessiondetial  t2 on  t1.sessionid = t2.sessionid
+					where t1.sessionid =1
+					union
+					select (
+		            SELECT accountname
+		            FROM accountm AS a
+		            WHERE a.accountid = t1.blue_accountid
+		            ) AS player ,row_number() over (ORDER BY sessiondetialid)as rownum  ,case bluefraction when 0 then ''0'' else bluefraction||
+					''(''||case bluehitposition when ''0'' then ''頭'' when ''1'' then ''軀幹'' when ''2'' then ''四肢'' when ''3'' then ''掉槍'' end ||'')''  end as bluefraction
+					from session t1
+					left join  sessiondetial  t2 on  t1.sessionid = t2.sessionid
+					where t1.sessionid =1
+					order by rownum  ) a group by 1,2,3 order by 1,2',
+ 'select distinct rownum from (select (
+		            SELECT accountname
+		            FROM accountm AS a
+		            WHERE a.accountid = t1.red_accountid
+		            ) AS player, row_number() over (ORDER BY sessiondetialid)as rownum  ,case redfraction when 0 then ''0'' else  redfraction||''(''
+					||
+					case redhitposition when ''0'' then ''頭'' when ''1'' then ''軀幹'' when ''2'' then ''四肢'' when ''3'' then ''掉槍'' end 
+					
+					||
+					'')'' end as redfraction
+					from session t1
+					left join  sessiondetial  t2 on  t1.sessionid = t2.sessionid
+					where t1.sessionid =1
+					union
+					select (
+		            SELECT accountname
+		            FROM accountm AS a
+		            WHERE a.accountid = t1.blue_accountid
+		            ) AS player ,row_number() over (ORDER BY sessiondetialid)as rownum  ,case bluefraction when 0 then ''0'' else bluefraction||
+					''(''||case bluehitposition when ''0'' then ''頭'' when ''1'' then ''軀幹'' when ''2'' then ''四肢'' when ''3'' then ''掉槍'' end ||'')''  end as bluefraction
+					from session t1
+					left join  sessiondetial  t2 on  t1.sessionid = t2.sessionid
+					where t1.sessionid =1
+					order by rownum  ) a order by 1'
+ )
+ as newtable (
+ 選手 varchar,回合1 text,回合2 text,回合3 text,回合4 text,回合5 text,回合6 text,回合7 text,回合8 text,回合9 text
+ );

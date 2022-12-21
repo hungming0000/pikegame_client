@@ -4,19 +4,21 @@ ALTER TABLE sessiondetial
 ADD COLUMN Redhitposition text;
 
 COMMENT ON COLUMN public.sessiondetial.Redhitposition
-    IS '擊中位置 頭3分
-		軀幹3分
-		四肢1分
-		掉槍-1分';
+    IS '擊中位置
+0:頭(head)3分
+1:軀幹(body)3分
+2:四肢(hand&lag)1分
+3:掉槍(fall)-1分';
 --1.2 藍方擊中位置
 ALTER TABLE sessiondetial 
 ADD COLUMN Bluehitposition text;
 
 COMMENT ON COLUMN public.sessiondetial.Bluehitposition
-    IS '擊中位置 頭3分
-		軀幹3分
-		四肢1分
-		掉槍-1分';
+    IS '擊中位置
+0:頭(head)3分
+1:軀幹(body)3分
+2:四肢(hand&lag)1分
+3:掉槍(fall)-1分';
 --2.紅方擊中影像
 ALTER TABLE sessiondetial 
 ADD COLUMN Redhitimage text;

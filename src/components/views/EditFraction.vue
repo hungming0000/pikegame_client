@@ -5,23 +5,25 @@
         <div class="cbtn-wrap">
           <form class="form-signup" action="" method="post" name="form">
             <span class="row">
-              <div class="col-sm-3 col-md-3" ></div>
+              <div class="col-sm-3 col-md-3"></div>
               <div class="col-sm-4 col-md-4" style="text-align: left">
                 <label for="blue_equipmentid">藍方分數</label>
-                <!-- <input
-                class="form-styling"
-                type="number"
-                name="bluefraction"
-                v-model="bluefraction"
-                placeholder=""
-                required
-              /> -->
                 <section>
                   <b-field>
-                    <b-radio v-model="bluehitposition" native-value="0" type="is-success"> 頭 </b-radio>
+                    <b-radio
+                      v-model="bluehitposition"
+                      native-value="0"
+                      type="is-success"
+                    >
+                      頭
+                    </b-radio>
                   </b-field>
                   <b-field>
-                    <b-radio v-model="bluehitposition" native-value="1" type="is-success">
+                    <b-radio
+                      v-model="bluehitposition"
+                      native-value="1"
+                      type="is-success"
+                    >
                       軀幹
                     </b-radio>
                   </b-field>
@@ -49,21 +51,31 @@
                 </section>
               </div>
               <div class="col-sm-5 col-md-5" style="text-align: left">
-              <label for="red_equipmentid">紅方分數</label>
-              <!-- <input
-                class="form-styling"
-                type="number"
-                name="redfraction"
-                v-model="redfraction"
-                placeholder=""
-                required
-              /> -->
-              <section>
+                <label for="red_equipmentid">紅方分數</label>
+                <!-- <input
+                  class="form-styling"
+                  type="number"
+                  name="redfraction"
+                  v-model="redfraction"
+                  placeholder=""
+                  required
+                /> -->
+                <section>
                   <b-field>
-                    <b-radio v-model="redhitposition" native-value="0"  type="is-success"> 頭 </b-radio>
+                    <b-radio
+                      v-model="redhitposition"
+                      native-value="0"
+                      type="is-success"
+                    >
+                      頭
+                    </b-radio>
                   </b-field>
                   <b-field>
-                    <b-radio v-model="redhitposition" native-value="1"  type="is-success">
+                    <b-radio
+                      v-model="redhitposition"
+                      native-value="1"
+                      type="is-success"
+                    >
                       軀幹
                     </b-radio>
                   </b-field>
@@ -85,12 +97,12 @@
                       掉槍
                     </b-radio>
                   </b-field>
-                  <b-button type="is-danger is-light" class="clearb"  @click="clearred"
+                  <b-button type="is-danger is-light"  class="clearb" @click="clearred"
                     >清除</b-button
                   >
                 </section>
-            </div>
-            </span>           
+              </div>
+            </span>
             <b-button type="submit" variant="success" @click="SetFraction"
               >儲存</b-button
             >
@@ -104,22 +116,26 @@
     </div>
   </div>
 </template> 
-    
-    
-     <script>
+      
+      
+       <script>
 import axios from "axios";
 
 export default {
-  inject: ["reload"],
+  inject: ["reloaddetial"],
   name: "Modal-view",
   props: ["sessiondetialid", "sessionid"],
   data: function () {
     return {
+      scorelist: [],
       bluefraction: 0,
       redfraction: 0,
-      bluehitposition:'',
-      redhitposition:'',
-
+      bluehitposition: "",
+      redhitposition: "",
+      finalredfraction: "",
+      finalbluefraction: "",
+      redhitpositionVal: "",
+      bluehitpositionVal: "",
     };
   },
 
@@ -132,7 +148,7 @@ export default {
       console;
       const url = this.GLOBAL.ApiUrl;
       axios
-        .post(url + "/Pikegame/Sessiondetial/EditFraction", {
+        .post(url + "/Pikegame/Sessiondetial/EditFractionbyId", {
           sessiondetialid: this.sessiondetialid,
           sessionid: this.sessionid,
           redhitposition: this.redhitposition,
@@ -142,7 +158,7 @@ export default {
           this.loading = false;
           if (response.data.isSuccess == true) {
             // document.documentElement.querySelector("#tfclose").click();
-            this.$emit("reload");
+            this.$emit("reloaddetial");
             // this.reload();
           } else {
             this.error = response.data.Message;
@@ -157,9 +173,28 @@ export default {
       this.redhitposition=null;
     },
   },
+  mounted() {
+    const url = this.GLOBAL.ApiUrl;
+    axios
+      .post(
+        url + "/Pikegame/Sessiondetial/GetSessiondetailById",
+        this.sessiondetialid
+      )
+      .then((response) => {
+        this.loading = false;
+        if (response.data.isSuccess == true) {
+          this.scorelist = response.data.Data.slice();
+          this.bluehitposition=response.data.Data[0].bluehitposition;
+          this.redhitposition=response.data.Data[0].redhitposition;
+        } else {
+          this.error = response.data.Message;
+        }
+      })
+      .catch((error) => console.log(error));
+  },
 };
 </script>
-    <style scoped>
+      <style scoped>
 @media only screen and (min-width: 960px) {
   .modal-content,
   .modal-card {
@@ -176,24 +211,12 @@ export default {
   justify-content: center;
   background-color: #000000da;
 }
-.modal {
-  text-align: center;
-  background-color: white;
-  height: 500px;
-  width: 500px;
-  margin-top: 10%;
-  padding: 60px 0;
-  border-radius: 20px;
-}
 .close {
   margin: 130px 0 0 -25px;
   cursor: pointer;
 }
 .close-img {
   width: 25px;
-}
-.check {
-  width: 150px;
 }
 h6 {
   font-weight: 500;
@@ -217,7 +240,7 @@ button {
 .modal-content {
   width: 35%;
   /* height: 45%; */
-  height:480px;
+  height: 480px;
   margin-top: 130px;
 }
 .modal-body {
@@ -243,125 +266,12 @@ body {
 }
 /*內容*/
 @import url(https://fonts.googleapis.com/css?family=Open+Sans:300,400,700);
-h1 {
-  font-size: 3em;
-  font-weight: 300;
-  line-height: 1em;
-  text-align: center;
-  color: #4dc3fa;
-}
-
-h2 {
-  font-size: 1em;
-  font-weight: 300;
-  text-align: center;
-  display: block;
-  line-height: 1em;
-  padding-bottom: 2em;
-  color: #fb667a;
-}
-
-h2 a {
-  font-weight: 700;
-  text-transform: uppercase;
-  color: #fb667a;
-  text-decoration: none;
-}
-.container th h1 {
-  font-weight: bold;
-  font-size: 1em;
-  text-align: left;
-  color: #185875;
-}
-
-.container td {
-  font-weight: normal;
-  font-size: 1em;
-  -webkit-box-shadow: 0 2px 2px -2px #0e1119;
-  -moz-box-shadow: 0 2px 2px -2px #0e1119;
-  box-shadow: 0 2px 2px -2px #0e1119;
-}
-
-.container {
-  text-align: left;
-  overflow: hidden;
-  width: 80%;
-  margin: 0 auto;
-  display: table;
-  padding: 0 0 8em 0;
-}
-
-.container td,
-.container th {
-  padding-bottom: 2%;
-  padding-top: 2%;
-  padding-left: 2%;
-}
-
-/* Background-color of the odd rows */
-.container tr:nth-child(odd) {
-  background-color: #323c50;
-}
-
-/* Background-color of the even rows */
-.container tr:nth-child(even) {
-  background-color: #2c3446;
-}
-
-.container th {
-  background-color: #1f2739;
-}
-
-.container td:first-child {
-  color: #fb667a;
-}
-
-.container tr:hover {
-  background-color: #464a52;
-  -webkit-box-shadow: 0 6px 6px -6px #0e1119;
-  -moz-box-shadow: 0 6px 6px -6px #0e1119;
-  box-shadow: 0 6px 6px -6px #0e1119;
-}
-
-.container td:hover {
-  background-color: #fff842;
-  color: #403e10;
-  font-weight: bold;
-
-  box-shadow: #7f7c21 -1px 1px, #7f7c21 -2px 2px, #7f7c21 -3px 3px,
-    #7f7c21 -4px 4px, #7f7c21 -5px 5px, #7f7c21 -6px 6px;
-  transform: translate3d(6px, -6px, 0);
-
-  transition-delay: 0s;
-  transition-duration: 0.4s;
-  transition-property: all;
-  transition-timing-function: line;
-}
 
 @media (max-width: 800px) {
   .container td:nth-child(4),
   .container th:nth-child(4) {
     display: none;
   }
-}
-/*Form Style*/
-.form-styling {
-  width: 50%;
-  height: 35px;
-  padding-left: 15px;
-  border: none;
-  border-radius: 20px;
-  margin-bottom: 20px;
-  background: rgba(255, 255, 255, 0.2);
-}
-.form-signup-left {
-  transform: translateX(-399px);
-  opacity: 1;
-}
-
-.form-signup-down {
-  top: 0px;
-  opacity: 0;
 }
 
 label {
@@ -377,8 +287,9 @@ label {
 :focus {
   outline: none;
 }
-.radio:hover, .checkbox:hover{
-  color: #FFF;
+.radio:hover,
+.checkbox:hover {
+  color: #fff;
 }
 .clearb{
    width: 75px;

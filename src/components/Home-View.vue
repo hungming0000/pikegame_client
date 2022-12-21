@@ -294,7 +294,11 @@
         <DetialModal
           v-if="showModal"
           @close-modal="showModal = false"
-          v-bind:SessiondetailList="parSessiondetailList"
+          :SessiondetailList="parSessiondetailList"
+          :sessionid="Parentsessionid"
+          @GetSessiondetail="GetSessiondetail"
+          @reload="reload"
+
         />
         <!--新增比賽-->
         <CreateTournamentModal
@@ -644,6 +648,7 @@ export default {
   provide() {
     return {
       reload: this.reload,
+      GetSessiondetail:this.GetSessiondetail,
     };
   },
   methods: {
@@ -919,7 +924,7 @@ export default {
       console.log("result" + result);
 
       //收到服务器信息，心跳重置 2022/11/04 開啟才會有心跳 (測試會先關閉)
-      this.reset();
+      //this.reset();
     },
     websocketsend(Data) {
       this.websock.send(Data); //这里可以自己跟后端约定

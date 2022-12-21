@@ -1,0 +1,28 @@
+	
+	WITH
+   sessiontable AS (
+	select * from crosstab (
+ 'select id,rownum,sessiondetialid from (select  row_number() over (ORDER BY sessiondetialid)as rownum  ,sessiondetialid,''id'' as id 
+					from session t1
+					left join  sessiondetial  t2 on  t1.sessionid = t2.sessionid
+					where t1.sessionid =1					
+					order by rownum)a group by 1,2,3 order by 1,2',
+ 'select distinct rownum from (select  row_number() over (ORDER BY sessiondetialid)as rownum  ,sessiondetialid,''id'' as id 
+					from session t1
+					left join  sessiondetial  t2 on  t1.sessionid = t2.sessionid
+					where t1.sessionid =1					
+					order by rownum)a order by 1'
+ )
+ as newtable (
+ 選手 varchar,回合1 integer,回合2 integer,回合3 integer,回合4 integer,回合5 integer,回合6 integer,回合7 integer,回合8 integer,回合9 integer
+ )
+ ),
+ scoretable AS(
+ 
+ )
+ 
+ 
+ select *from sessiontable
+ union
+  select *from scoretable
+ ;
