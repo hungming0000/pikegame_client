@@ -11,7 +11,10 @@
           <b-nav-item :to="{ path: '/Accountm' }">帳號管理</b-nav-item>
         </b-navbar-nav>
         <b-navbar-nav>
-          <b-nav-item :to="{ path: '/WisdomGunhead' }">功能測試</b-nav-item>
+          <b-nav-item :to="{ path: '/AdSetting' }">廣告設定</b-nav-item>
+        </b-navbar-nav>
+        <b-navbar-nav>
+          <b-nav-item :to="{ path: '/WisdomGunhead' }">API功能測試</b-nav-item>
         </b-navbar-nav>
 
         <!-- Right aligned nav items -->

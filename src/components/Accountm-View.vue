@@ -205,7 +205,7 @@ export default {
     CreateAccountm() {
       this.showACreateModal = true;
     },
-    //新增使用者
+    //編輯使用者
     EditAccountm(accountid) {
       this.showAEditModal = true;
       this.Parentaccountid = accountid;

@@ -1,0 +1,51 @@
+-- FUNCTION: public.is_equipment_exist(bigint)
+
+-- DROP FUNCTION IF EXISTS public.is_equipment_exist(bigint);
+
+CREATE OR REPLACE FUNCTION public.is_timeperiod_exist(
+	adid bigint,times bigint)
+    RETURNS boolean
+    LANGUAGE 'plpgsql'   
+    VOLATILE PARALLEL UNSAFE
+AS $BODY$
+declare
+    isexist bool;
+    t_count integer;  	
+	tperiod text;
+begin
+
+
+
+select advertistimeperiod into tperiod from public.advertisesetting
+where advertiseid=adid;
+
+    for i in 1..times loop
+     
+	   
+	   SELECT count(*) into t_count FROM public.advertisesetting
+		where adsstatus=1 and 
+		(
+		advertisstarttime<now() AND advertisendtime>now())
+		AND (
+
+			(select cast(now() as time))
+		between 
+		cast(SPLIT_PART(( SELECT SPLIT_PART(tperiod,',',i) ),'-',1)as time) and  cast(SPLIT_PART(( SELECT SPLIT_PART(tperiod,',',i) ),'-',2)as time)
+
+		);
+	   
+    end loop;
+	
+	IF t_count = 0 
+	THEN isexist=false;
+
+	ELSE  isexist=true ;
+	END IF;
+
+
+
+    return isexist;
+end
+$BODY$;
+
+

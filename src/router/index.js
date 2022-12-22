@@ -6,7 +6,7 @@ import LoginView from '../components/auth/Login-View.vue'
 import global_ from '../components/config/Global-View.vue'
 import WisdomGunheadView from '../components/views/FunctionWisdomGunhead.vue'
 import HomeIndexView from '../components/HomeIndex-View.vue'
-
+import AdSettingView from '../components/AdSetting-View.vue'
 
 
 Vue.use(VueRouter)
@@ -46,6 +46,15 @@ const routes = [
       keepAlive: true
     }
   },
+  {
+    path: '/AdSetting',
+    name: 'AdSetting',
+    component: AdSettingView,
+    meta:{
+      keepAlive: true
+    }
+  },
+  
   {
     path: '/WisdomGunhead',
     name: 'WisdomGunhead',
