@@ -5,9 +5,9 @@
           <b-button
             style="float: right; margin-bottom: 10px; z-index: 1"
             type="is-primary is-light"
-            @click="CreateAccountm()"
-            v-permission="'CreateAccountm'"
-            >新增使用者</b-button
+            @click="CreateAd()"
+            v-permission="'CreateAd'"
+            >新增廣告</b-button
           >
           <b-table
             id="AdlistData"
@@ -75,6 +75,16 @@
             </b-table-column>
             <b-table-column
               class="th-wrap is-centered"
+              field="adsstatus"
+              label="狀態"
+              :td-attrs="columnTdAttrs"
+              :th-attrs="columnThAttrs"
+              v-slot="props"
+            >
+              {{ props.row.adsstatus }}
+            </b-table-column>
+            <b-table-column
+              class="th-wrap is-centered"
               field="modifydate"
               label="修改日期"
               :td-attrs="columnTdAttrs"
@@ -104,7 +114,7 @@
                   type="is-success"
                 ></b-icon>
                 <span style="margin-left: 5px; display: inline-block"
-                  >編輯使用者</span
+                  ></span
                 ></b-button
               >
               <b-button
@@ -121,7 +131,7 @@
                   type="is-danger"
                 ></b-icon>
                 <span style="margin-left: 5px; display: inline-block"
-                  >刪除</span
+                  ></span
                 ></b-button
               >
               <div class="nav">
@@ -133,15 +143,15 @@
         </div>
       </div>
       <!--新增使用者-->
-      <CreateAccountmModal
-        v-if="showACreateModal"
-        @close-modal="showACreateModal = false"
+      <CreateAdvertiseModal
+        v-if="showAdCreateModal"
+        @close-modal="showAdCreateModal = false"
         @reload="reload"
       />
       <!--編輯-->
       <EditAccountmModal
-        v-if="showAEditModal"
-        @close-modal="showAEditModal = false"
+        v-if="showAdeditModal"
+        @close-modal="showAdeditModal = false"
         @reload="reload"
         v-bind:Paccountid="Parentaccountid"
       />
@@ -153,13 +163,13 @@
   
   <script>  
   import axios from "axios"; 
-  import CreateAccountmModal from "./views/CreateAccountm.vue";
+  import CreateAdvertiseModal from "./views/CreateAdvertise.vue";
   import EditAccountmModal from "./views/EditAccountm.vue";
   //import Swal from 'sweetalert2'
   
   export default {
     components: {
-      CreateAccountmModal,
+      CreateAdvertiseModal,
       EditAccountmModal,
     },
     //inject: ["reload"], // 注入reload变量
@@ -168,8 +178,8 @@
         isReloadData: true,
         tableClassList: [""],
         AdlistData: [],
-        showACreateModal: false,
-        showAEditModal: false,
+        showAdCreateModal: false,
+        showAdeditModal: false,
         Parentaccountid: "",        
       };
     },
@@ -199,7 +209,13 @@
         return new Intl.DateTimeFormat("default", { dateStyle: "long" }).format(
           date
         );
-      },      
+      },    
+       //新增使用者
+       CreateAd() {
+        this.showAdCreateModal = true;
+        
+      },    
+    
       //新增使用者
       EditAccountm(accountid) {
         this.showAEditModal = true;
@@ -225,7 +241,7 @@
         return {
           class: "ttzc-header",
           style: {
-            "text-align": "center !important;width:50px!important;",
+            "text-align": "center !important;width:35px!important;",
             color: "white",
           },
         };
@@ -247,3 +263,14 @@
   };   
   
   </script>
+  <style >
+  .tile {
+width: 90vw;
+
+  }
+  /* nav {
+    z-index: 1;
+    position: inherit;
+    right: 0;
+  } */
+  </style>

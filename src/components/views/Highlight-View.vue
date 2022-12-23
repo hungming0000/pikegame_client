@@ -43,9 +43,9 @@ export default {
 };
 </script>
 
-<style >
+<style scoped>
 .highlight-banner {
-  /* padding-top: 7rem; */
+ 
   width: 100%;
   min-height: 568px;
   text-align: left;

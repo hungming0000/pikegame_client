@@ -26,7 +26,7 @@ import 'swiper/css/swiper.css'//輪播用
 import LazyTube from "vue-lazytube";//影片播放
 
 Vue.use(LazyTube);
-
+Vue.use(VueAwesomeSwiper);
 library.add(faCheck, faCheckCircle, faInfoCircle, faExclamationTriangle, faExclamationCircle,
   faArrowUp, faAngleRight, faAngleLeft, faAngleDown, faChevronRight, faChevronDown,
   faEye, faEyeSlash, faCaretDown, faCaretUp, faUpload);
@@ -59,7 +59,7 @@ Vue.use(Buefy, {
   //   }
   // }
 });
-Vue.use(VueAwesomeSwiper);
+
 // Vue.use(BootstrapVue);
 Vue.directive("permission", {
   inserted(el, binding) {

@@ -41,7 +41,7 @@ export default {
 };
 </script>
   
-<style>
+<style scoped>
 nav {
   z-index: 1;
   position: fixed;
@@ -123,25 +123,5 @@ a:hover i {
 .text-center {
   text-align: center;
 }
-/* responsive */
 
-/* @media only screen and (max-width: 480px) {
-  h1 {
-    font-size: 6em;
-  }
-  li {
-    display: list-item;
-  }
-  #contact article li {
-    display: inline-block;
-  }
-  .left {
-    display: block;
-    width: 100%;
-  }
-  .right {
-    display: block;
-    width: 100%;
-  }
-} */
 </style>
