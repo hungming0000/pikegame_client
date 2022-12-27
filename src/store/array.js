@@ -5,7 +5,7 @@ export function checkArray(key){
 
     switch (type) {
         case '0': //比賽制定者
-        arr=['CreateTournament','CreateSession','EditSession','CreateEquipment','EditEquipment','Sessiondetail','CreateAccountm','EditAccountm','DeleteAccountm','clickrb','EditScore','CreateAd'];
+        arr=['CreateTournament','CreateSession','EditSession','CreateEquipment','EditEquipment','Sessiondetail','CreateAccountm','EditAccountm','DeleteAccountm','clickrb','EditScore','CreateAd','EditAd'];
         break;
         case '1': //裁判
         arr=['Sessiondetail','clickrb','EditScore'];

@@ -60,9 +60,7 @@
                 <option value="1">上架</option>
                 <option value="0">下架</option>
               </b-select>
-            </b-field>
-
-            <br />
+            </b-field>           
             <b-button type="submit" variant="success" @click="CreateAdvertise"
               >儲存</b-button
             >
@@ -107,7 +105,7 @@ export default {
     },
     //儲存廣告
     CreateAdvertise() {
-      console;
+      
       const url = this.GLOBAL.ApiUrl;
       axios
         .post(url + "/Pikegame/Advertisesetting/CreateAdvertise", {
@@ -262,5 +260,8 @@ label {
 
 :focus {
   outline: none;
+}
+.cbtn-wrap {   
+    margin-top: 10px;
 }
 </style> 

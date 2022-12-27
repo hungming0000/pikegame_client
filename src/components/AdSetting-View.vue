@@ -1,7 +1,7 @@
 <template>
     <div class="tile ttzc-tile">
       <div class="tile-content">
-        <div class="ttzc-table-wrap">
+        <div class="ttzc-table-wrap row">
           <b-button
             style="float: right; margin-bottom: 10px; z-index: 1"
             type="is-primary is-light"
@@ -102,9 +102,9 @@
               v-slot="props"
             >
               <b-button
-                @click="EditAccountm(props.row.accountid)"
+                @click="EditAd(props.row.advertiseid)"
                 type="is-info is-light"
-                v-permission="'EditAccountm'"
+                v-permission="'EditAd'"
               >
                 <b-icon
                   pack="fas"
@@ -149,11 +149,11 @@
         @reload="reload"
       />
       <!--編輯-->
-      <EditAccountmModal
+      <EditAdvertiseModal
         v-if="showAdeditModal"
         @close-modal="showAdeditModal = false"
         @reload="reload"
-        v-bind:Paccountid="Parentaccountid"
+        :advertiseid="Parentadvertiseid"
       />
       <div></div>
     </div>
@@ -164,13 +164,13 @@
   <script>  
   import axios from "axios"; 
   import CreateAdvertiseModal from "./views/CreateAdvertise.vue";
-  import EditAccountmModal from "./views/EditAccountm.vue";
+  import EditAdvertiseModal from "./views/EditAdvertise.vue";
   //import Swal from 'sweetalert2'
   
   export default {
     components: {
       CreateAdvertiseModal,
-      EditAccountmModal,
+      EditAdvertiseModal,
     },
     //inject: ["reload"], // 注入reload变量
     data() {
@@ -180,7 +180,7 @@
         AdlistData: [],
         showAdCreateModal: false,
         showAdeditModal: false,
-        Parentaccountid: "",        
+        Parentadvertiseid: "",        
       };
     },
     provide() {
@@ -210,16 +210,16 @@
           date
         );
       },    
-       //新增使用者
+       //新增廣告
        CreateAd() {
         this.showAdCreateModal = true;
         
       },    
     
-      //新增使用者
-      EditAccountm(accountid) {
-        this.showAEditModal = true;
-        this.Parentaccountid = accountid;
+      //新增廣告
+      EditAd(advertiseid) {
+        this.showAdeditModal = true;
+        this.Parentadvertiseid = advertiseid;
       },    
   
       handleReload() {

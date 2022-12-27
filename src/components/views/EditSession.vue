@@ -185,7 +185,7 @@ export default {
     },
     //取得場次
     GetSession() {
-        console.log('this.sessionid',this.sessionid)
+        
         const url = this.GLOBAL.ApiUrl;
       axios
         .post(
