@@ -4,6 +4,29 @@
       <div class="modal-body">
         <div class="cbtn-wrap">
           <form class="form-signup" action="" method="post" name="form">
+            <b-field
+              class="file is-primary"
+              :class="{ 'has-name': !!file }"
+              style="width: 50%; margin-left: 30%"
+            >
+              <b-upload
+                v-model="file"
+                class="file-label"
+                accept=".jpg,.png,.jpeg"
+                required
+                validationMessage="請選擇圖片"
+              >
+                <span class="file-cta">
+                  <b-icon class="file-icon" icon="upload"></b-icon>
+                  <span class="file-label"
+                    >點選上傳圖片 (.jpg.png.jpeg)</span
+                  >
+                </span>
+                <span class="file-name" v-if="file">
+                  {{ file.name }}
+                </span>
+              </b-upload>            
+            </b-field>
             <label for="advertiseurl">廣告路徑</label>
             <b-field style="width: 50%; margin-left: 25%">
               <b-input
@@ -60,7 +83,7 @@
                 <option value="1">上架</option>
                 <option value="0">下架</option>
               </b-select>
-            </b-field>           
+            </b-field>
             <b-button type="submit" variant="success" @click="CreateAdvertise"
               >儲存</b-button
             >
@@ -96,6 +119,8 @@ export default {
       adsstatus: "",
       adsstatusName: "",
       modifyuser: "",
+      file: null,     
+      formData: new FormData(),
     };
   },
 
@@ -105,7 +130,6 @@ export default {
     },
     //儲存廣告
     CreateAdvertise() {
-      
       const url = this.GLOBAL.ApiUrl;
       axios
         .post(url + "/Pikegame/Advertisesetting/CreateAdvertise", {
@@ -119,9 +143,24 @@ export default {
           advertistimeperiod: this.advertistimeperiod,
           advertiscosts: this.advertiscosts,
           adsstatus: this.adsstatus,
-          modifyuser: this.modifyuser,
-          adsstatusName:this.adsstatusName
+          modifyuser: JSON.parse(this.modifyuser),
+          adsstatusName: this.adsstatusName,
         })
+        .then((response) => {
+          this.loading = false;
+          if (response.data.isSuccess == true) {
+            this.uploadpicture();
+            this.$emit("reload");
+          } else {
+            this.error = response.data.Message;
+          }
+        })
+        .catch((error) => console.log(error));
+    },
+    async uploadpicture() {
+      const url = this.GLOBAL.ApiUrl;
+      axios
+        .post(url + "/Api/UploadPicture", this.formData)
         .then((response) => {
           this.loading = false;
           if (response.data.isSuccess == true) {
@@ -146,9 +185,17 @@ export default {
         }
       },
     },
+    file: {
+      handler: function () {
+        this.advertiseurl = this.file.name;
+         
+         this.formData.append("file", this.file, this.file.name);
+       
+      },
+    },
   },
   created() {
-    this.modifyuser= sessionStorage.getItem("accountid");
+    this.modifyuser = sessionStorage.getItem("accountid");
   },
 };
 </script>
@@ -261,7 +308,13 @@ label {
 :focus {
   outline: none;
 }
-.cbtn-wrap {   
-    margin-top: 10px;
+.cbtn-wrap {
+  margin-top: 10px;
+}
+button {
+  margin-top: 17px;
+}
+label {
+  display: contents;
 }
 </style> 

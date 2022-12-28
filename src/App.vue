@@ -57,9 +57,9 @@ export default {
 a .icon-text {
   padding: 0px !important;
 }
-a span {
+/* a span {
   height: 0px;
-}
+} */
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;

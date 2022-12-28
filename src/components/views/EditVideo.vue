@@ -1,68 +1,30 @@
-<template>    
+<template>
     <div class="modal-overlay">
-        
       <div class="modal-content">
         <div class="modal-body">
           <div class="cbtn-wrap">
             <form class="form-signup" action="" method="post" name="form">
-              <label for="advertiseurl">廣告路徑</label>
+              <label for="videourl">影片路徑</label>
               <b-field style="width: 50%; margin-left: 25%">
                 <b-input
-                  v-model="advertiseurl"
-                  placeholder="請輸入廣告路徑"
+                  v-model="videourl"
+                  placeholder="請輸入影片路徑"
                   required
                 ></b-input>
-              </b-field>
-  
-              <label for="advertisstarttime">下廣告時間起</label>
-              <b-field style="width: 50%; margin-left: 25%">
-                <date-picker
-                  v-model="advertisstarttime"
-                  type="datetime"
-                  required
-                ></date-picker>
-              </b-field>
-              <label for="advertisendtime">下廣告時間迄</label>
-              <b-field style="width: 50%; margin-left: 25%">
-                <date-picker
-                  v-model="advertisendtime"
-                  type="datetime"
-                  required
-                ></date-picker>
-              </b-field>
-  
-              <label for="advertistimeperiod">播放時段</label>
-              <b-field style="width: 50%; margin-left: 25%">
-                <b-input
-                  v-model="advertistimeperiod"
-                  placeholder="請輸入播放時段"
-                  required
-                >
-                </b-input>
-              </b-field>
-  
-              <label for="advertiscosts">廣告費用</label>
-              <b-field style="width: 50%; margin-left: 25%">
-                <b-input
-                  v-model="advertiscosts"
-                  placeholder="請輸入廣告費用"
-                  required
-                >
-                </b-input>
-              </b-field>
-              <label for="adsstatus">狀態</label>
+              </b-field>  
+              <label for="videostatus">狀態</label>
               <b-field style="width: 50%; margin-left: 25%">
                 <b-select
                   placeholder="請選擇狀態"
-                  v-model="adsstatus"
+                  v-model="videostatus"
                   required
                   expanded
                 >
                   <option value="1">上架</option>
                   <option value="0">下架</option>
                 </b-select>
-              </b-field>              
-              <b-button type="submit" variant="success" @click="EditAdvertise"
+              </b-field>           
+              <b-button type="submit" variant="success" @click="EditVideo"
                 >儲存</b-button
               >
               <!-- <a ng-click="checked = !checked" class="btn-signup">儲存</a> -->
@@ -70,7 +32,7 @@
           </div>
         </div>
       </div>
-      <div id="acclose" class="close btn-close" @click="$emit('close-modal')">
+      <div id="vdclose" class="close btn-close" @click="$emit('close-modal')">
         <img class="close-img" src="../../assets/close-button.png" alt="" />
       </div>
     </div>
@@ -79,24 +41,14 @@
         
          <script>
   import axios from "axios";
-  import DatePicker from "vue2-datepicker";
-  import "vue2-datepicker/index.css";
-  import moment from "moment";
-  export default {
-    components: { DatePicker },
+  export default {   
     inject: ["reload"],
     name: "Modal-view",
-    props: ["advertiseid"],
+    props: ["videoid"],
     data: function () {
       return {
-        AdvertiseList:[],
-        advertiseurl: "",
-        advertisstarttime: "",
-        advertisendtime: "",
-        advertistimeperiod: "",
-        advertiscosts: "",
-        adsstatus: "",
-        adsstatusName: "",
+        videourl: "",
+        videostatus: "",       
         modifyuser: "",
       };
     },
@@ -105,24 +57,14 @@
       handleSave() {
         this.handleClose();
       },
-      //儲存廣告
-      EditAdvertise() {
-        
+      //儲存影片
+      EditVideo() {        
         const url = this.GLOBAL.ApiUrl;
         axios
-          .post(url + "/Pikegame/Advertisesetting/EditAdvertise", {
-            advertiseurl: this.advertiseurl,
-            advertisstarttime: moment(this.advertisstarttime).format(
-              "yyyy-MM-DD HH:mm:ss"
-            ),
-            advertisendtime: moment(this.advertisendtime).format(
-              "yyyy-MM-DD HH:mm:ss"
-            ),
-            advertistimeperiod: this.advertistimeperiod,
-            advertiscosts: this.advertiscosts,
-            adsstatus: this.adsstatus,
-            modifyuser: JSON.parse(this.modifyuser),
-            adsstatusName:this.adsstatusName
+          .post(url + "/Pikegame/Videosetting/EditVideo", {
+            videourl: this.videourl,           
+            videostatus: this.videostatus,          
+            modifyuser: JSON.parse(this.modifyuser)           
           })
           .then((response) => {
             this.loading = false;
@@ -134,22 +76,17 @@
           })
           .catch((error) => console.log(error));
       },
-      async GetAdvertisesettingByid(){
+      async GetVideosettingById(){
+       
         const url = this.GLOBAL.ApiUrl;
         await axios
-          .post(url + "/Pikegame/Advertisesetting/GetAdvertisesettingById", JSON.stringify(this.advertiseid))
+          .post(url + "/Pikegame/Videosetting/GetVideosettingById", JSON.stringify(this.videoid))
           .then((response) => {
             this.loading = false;
-            if (response.data.isSuccess == true) {
-              this.AdvertiseList = response.data.Data;
-              this.advertiseurl=response.data.Data[0].advertiseurl;              
-              this.advertisstarttime=new Date(response.data.Data[0].advertisstarttime);
-              this.advertisendtime=new Date(response.data.Data[0].advertisendtime);
-              this.advertistimeperiod=response.data.Data[0].advertistimeperiod;
-              this.advertiscosts=response.data.Data[0].advertiscosts;
-              this.adsstatus=response.data.Data[0].adsstatus;
+            if (response.data.isSuccess == true) {              
+              this.videourl=response.data.Data[0].videourl;
+              this.videostatus=response.data.Data[0].videostatus;
               this.modifyuser=response.data.Data[0].modifyuser;
-
 
             } else {
               this.error = response.data.Message;
@@ -157,26 +94,12 @@
           })
           .catch((error) => console.log(error));
       },
-    },
-    watch: {
-      adsstatus: {
-        handler: function () {
-          switch (this.adsstatus) {
-            case 0: //比賽制定者
-              this.adsstatusName = "下架";
-              break;
-            case 1: //裁判
-              this.adsstatusName = "上架";
-              break;
-          }
-        },
-      },
-    },
+    },    
     created() {
       this.modifyuser= sessionStorage.getItem("accountid");
     },
     mounted(){
-            this.GetAdvertisesettingByid();
+            this.GetVideosettingById();
     }
   };
   </script>
@@ -225,7 +148,7 @@
   
   .modal-content {
     width: 45%;
-    height: 65%;
+    height: 35%;
     margin-top: 130px;
   }
   .modal-body {
@@ -290,9 +213,6 @@
     outline: none;
   }
   .cbtn-wrap {   
-    margin-top: 10px;
-}
-button{
-  margin-top: 17px
-}
+      margin-top: 10px;
+  }
   </style> 

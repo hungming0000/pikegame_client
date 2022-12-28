@@ -3,15 +3,15 @@
     <div class="tile-content">
       <div class="ttzc-table-wrap row">
         <b-button
-          style="float: right; margin-bottom: 10px;"
+          style="float: right; margin-bottom: 10px"
           type="is-primary is-light"
-          @click="CreateAd()"
-          v-permission="'CreateAd'"
-          >新增廣告</b-button
+          @click="CreateVideo()"
+          v-permission="'CreateVideo'"
+          >新增影片</b-button
         >
         <b-table
-          id="AdlistData"
-          :data="AdlistData"
+          id="videolistData"
+          :data="videolistData"
           :class="tableClassList"
           ref="table"
           paginated
@@ -25,63 +25,23 @@
         >
           <b-table-column
             class="th-wrap is-centered"
-            field="advertiseurl"
-            label="廣告路徑"
+            field="videourl"
+            label="影片路徑"
             :th-attrs="columnThAttrs"
             :td-attrs="columnTdAttrs"
             v-slot="props"
           >
-            {{ props.row.advertiseurl }}
+            {{ props.row.videourl }}
           </b-table-column>
           <b-table-column
             class="th-wrap is-centered"
-            field="advertisstarttime"
-            label="下廣告時間起"
-            :td-attrs="columnTdAttrs"
-            :th-attrs="columnThAttrs"
-            v-slot="props"
-          >
-            {{ props.row.advertisstarttime }}
-          </b-table-column>
-          <b-table-column
-            class="th-wrap is-centered"
-            field="advertisendtime"
-            label="下廣告時間迄"
-            :td-attrs="columnTdAttrs"
-            :th-attrs="columnThAttrs"
-            v-slot="props"
-          >
-            {{ props.row.advertisendtime }}
-          </b-table-column>
-          <b-table-column
-            class="th-wrap is-centered"
-            field="advertistimeperiod"
-            label="播放時段"
-            :td-attrs="columnTdAttrs"
-            :th-attrs="columnThAttrs"
-            v-slot="props"
-          >
-            {{ props.row.advertistimeperiod }}
-          </b-table-column>
-          <b-table-column
-            class="th-wrap is-centered"
-            field="advertiscosts"
-            label="廣告費用"
-            :td-attrs="columnTdAttrs"
-            :th-attrs="columnThAttrs"
-            v-slot="props"
-          >
-            {{ props.row.advertiscosts }}
-          </b-table-column>
-          <b-table-column
-            class="th-wrap is-centered"
-            field="adsstatus"
+            field="videostatus"
             label="狀態"
             :td-attrs="columnTdAttrs"
             :th-attrs="columnThAttrs"
             v-slot="props"
           >
-            {{ props.row.adsstatus }}
+            {{ props.row.videostatus }}
           </b-table-column>
           <b-table-column
             class="th-wrap is-centered"
@@ -102,9 +62,9 @@
             v-slot="props"
           >
             <b-button
-              @click="EditAd(props.row.advertiseid)"
+              @click="EditVideo(props.row.videoid)"
               type="is-info is-light"
-              v-permission="'EditAd'"
+              v-permission="'EditVideo'"
             >
               <b-icon
                 pack="fas"
@@ -115,10 +75,10 @@
               ></b-icon>
              </b-button>
             <b-button
-              @click="DeleteAd(props.row.advertiseid)"
+              @click="DeleteVideo(props.row.videoid)"
               type="is-info is-light"
               style="margin-left: 5px"
-              v-permission="'DeleteAd'"
+              v-permission="'DeleteVideo'"
             >
               <b-icon
                 pack="fas"
@@ -127,23 +87,23 @@
                 style="display: inline-block"
                 type="is-danger"
               ></b-icon>
-              </b-button>           
+            </b-button>
           </b-table-column>
         </b-table>
       </div>
     </div>
     <!--新增使用者-->
-    <CreateAdvertiseModal
-      v-if="showAdCreateModal"
-      @close-modal="showAdCreateModal = false"
+    <CreateVideoModal
+      v-if="showVideoCreateModal"
+      @close-modal="showVideoCreateModal = false"
       @reload="reload"
     />
     <!--編輯-->
-    <EditAdvertiseModal
-      v-if="showAdeditModal"
-      @close-modal="showAdeditModal = false"
+    <EditVideoModal
+      v-if="showVideoeditModal"
+      @close-modal="showVideoeditModal = false"
       @reload="reload"
-      :advertiseid="Parentadvertiseid"
+      :videoid="Parentvideoid"
     />
     <div></div>
   </div>
@@ -153,24 +113,24 @@
   
   <script>
 import axios from "axios";
-import CreateAdvertiseModal from "./views/CreateAdvertise.vue";
-import EditAdvertiseModal from "./views/EditAdvertise.vue";
+import CreateVideoModal from "./views/CreateVideo.vue";
+import EditVideoModal from "./views/EditVideo.vue";
 import Swal from "sweetalert2";
 
 export default {
   components: {
-    CreateAdvertiseModal,
-    EditAdvertiseModal,
+    CreateVideoModal,
+    EditVideoModal,
   },
   //inject: ["reload"], // 注入reload变量
   data() {
     return {
       isReloadData: true,
       tableClassList: [""],
-      AdlistData: [],
-      showAdCreateModal: false,
-      showAdeditModal: false,
-      Parentadvertiseid: "",
+      videolistData: [],
+      showVideoCreateModal: false,
+      showVideoeditModal: false,
+      Parentvideoid: "",
     };
   },
   provide() {
@@ -179,14 +139,14 @@ export default {
     };
   },
   methods: {
-    async GetAdvertisesetting() {
+    async GetVideosetting() {
       const url = this.GLOBAL.ApiUrl;
       await axios
-        .post(url + "/Pikegame/Advertisesetting/GetAdvertisesetting", {})
+        .post(url + "/Pikegame/Videosetting/GetVideosetting", {})
         .then((response) => {
           this.loading = false;
           if (response.data.isSuccess == true) {
-            this.AdlistData = response.data.Data;
+            this.videolistData = response.data.Data;
           } else {
             this.error = response.data.Message;
           }
@@ -212,28 +172,28 @@ export default {
     padTo2Digits(num) {
       return num.toString().padStart(2, "0");
     },
-    //新增廣告
-    CreateAd() {
-      this.showAdCreateModal = true;
+    //新增影片
+    CreateVideo() {
+      this.showVideoCreateModal = true;
     },
 
-    //新增廣告
-    EditAd(advertiseid) {
-      this.showAdeditModal = true;
-      this.Parentadvertiseid = advertiseid;
+    //編輯影片
+    EditVideo(videoid) {
+      this.showVideoeditModal = true;
+      this.Parentvideoid = videoid;
     },
-    //刪除廣告
-    async DeleteAdvertiseAPI(advertiseid) {
+    //刪除影片
+    async DeleteVideoAPI(videoid) {
       const url = this.GLOBAL.ApiUrl;
       await axios
         .post(
-          url + "/Pikegame/Advertisesetting/DeleteAdvertise",
-          JSON.stringify(advertiseid)
+          url + "/Pikegame/Videosetting/DeleteVideo",
+          JSON.stringify(videoid)
         )
         .then((response) => {
           this.loading = false;
           if (response.data.isSuccess == true) {
-            Swal.fire("已刪除!", `該輪播圖片已被刪除`, "success");
+            Swal.fire("已刪除!", `該影片已被刪除`, "success");
             this.reload();
           } else {
             this.error = response.data.Message;
@@ -241,11 +201,11 @@ export default {
         })
         .catch((error) => console.log(error));
     },
-    //刪除廣告 sweetalert
-    DeleteAd(advertiseid) {
+    //刪除影片 sweetalert
+    DeleteVideo(videoid) {
       Swal.fire({
         title: "確定要刪除嗎?",
-        text: "刪除可能影響廣告輪播呈現!",
+        text: "刪除可能影響影片呈現!",
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
@@ -254,10 +214,11 @@ export default {
         cancelButtonText: "取消",
       }).then((result) => {
         if (result.isConfirmed) {
-          this.DeleteAdvertiseAPI(advertiseid);
+          this.DeleteVideoAPI(videoid);
         }
       });
     },
+
     handleReload() {
       this.reload(); //在这里可直接调用 ，一般用在新增一条数据，或者删除了一条数据，需要刷新当前页面的时候
     },
@@ -277,15 +238,15 @@ export default {
       return {
         class: "ttzc-header",
         style: {
-          "text-align": "center !important;width:35px!important;",
+          "text-align": "center !important;width:50px!important;",
           color: "white",
         },
       };
     },
     reload() {
-      this.showACreateModal = false;
-      this.showAEditModal = false;
-      this.GetAdvertisesetting();
+      this.showVideoCreateModal = false;
+      this.showVideoeditModal = false;
+      this.GetVideosetting();
 
       this.isReloadData = false;
       this.$nextTick(() => {
@@ -294,7 +255,7 @@ export default {
     },
   },
   mounted() {
-    this.GetAdvertisesetting();
+    this.GetVideosetting();
   },
 };
 </script>

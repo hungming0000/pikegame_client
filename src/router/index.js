@@ -7,6 +7,8 @@ import global_ from '../components/config/Global-View.vue'
 import WisdomGunheadView from '../components/views/FunctionWisdomGunhead.vue'
 import HomeIndexView from '../components/HomeIndex-View.vue'
 import AdSettingView from '../components/AdSetting-View.vue'
+import CarouseSettinglView from '../components/CarouselSettings-View.vue'
+
 
 
 Vue.use(VueRouter)
@@ -42,6 +44,14 @@ const routes = [
     path: '/Accountm',
     name: 'Accountm',
     component: AccountmView,
+    meta:{
+      keepAlive: true
+    }
+  },  
+  {
+    path: '/CarouselView',
+    name: 'CarouselView',
+    component: CarouseSettinglView,
     meta:{
       keepAlive: true
     }
