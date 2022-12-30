@@ -4,7 +4,6 @@
       <div class="modal-body">
         <div class="cbtn-wrap">
           <form class="form-signup" action="" method="post" name="form">
-
             <label for="sessionname">場次</label>
             <b-field style="width: 50%; margin-left: 25%">
               <b-input
@@ -13,7 +12,6 @@
                 required
               ></b-input>
             </b-field>
-
 
             <!-- <label for="sessionname">場次</label>
             <input
@@ -33,10 +31,10 @@
             ></date-picker>
 
             <label for="blue_accountid">藍方選手</label>
-            <b-field style="width:50%;margin-left: 25%">
+            <b-field style="width: 50%; margin-left: 25%">
               <b-select
                 placeholder="請選擇藍方選手"
-                v-model="blue_accountid"                
+                v-model="blue_accountid"
                 required
                 expanded
               >
@@ -48,13 +46,13 @@
                   {{ item.accountname }}
                 </option>
               </b-select>
-            </b-field>     
+            </b-field>
 
             <label for="red_accountid">紅方選手</label>
-            <b-field style="width:50%;margin-left: 25%" >
+            <b-field style="width: 50%; margin-left: 25%">
               <b-select
                 placeholder="請選擇紅方選手"
-                v-model="red_accountid"                
+                v-model="red_accountid"
                 required
                 expanded
               >
@@ -66,12 +64,12 @@
                   {{ item.accountname }}
                 </option>
               </b-select>
-            </b-field>    
+            </b-field>
             <label for="judge_accountid">裁判</label>
-            <b-field style="width:50%;margin-left: 25%">
+            <b-field style="width: 50%; margin-left: 25%">
               <b-select
                 placeholder="請選擇裁判"
-                v-model="judge_accountid"                
+                v-model="judge_accountid"
                 required
                 expanded
               >
@@ -83,7 +81,7 @@
                   {{ item.accountname }}
                 </option>
               </b-select>
-            </b-field> 
+            </b-field>
             <b-button type="submit" variant="success" @click="SetSession"
               >儲存</b-button
             >
@@ -184,7 +182,7 @@ export default {
           }
         })
         .catch((error) => console.log(error));
-    },   
+    },
   },
   mounted() {
     this.GetPlayerAccount();
@@ -198,6 +196,18 @@ export default {
 };
 </script>
   <style scoped>
+/* @media only screen and (device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) { */
+
+@media only screen and (max-width: 480px)  {
+  .modal-content {
+    width: 80% !important;
+    height: 65%;
+    margin-top: 130px;
+  }
+  .close {
+    margin: 34.7% 0 0 -53px !important;
+  }
+}
 @media only screen and (min-width: 769px) {
   .modal-content,
   .modal-card {

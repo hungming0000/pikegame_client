@@ -2,16 +2,14 @@
   <keep-alive v-if="isReloadData">
     <div class="tile ttzc-tile">
       <div class="tile-content">
-        <div class="ttzc-table-wrap">
+        <div class="ttzc-table-wrap row">
           <b-button
-            style="float: right; margin-bottom: 10px; z-index: 1"
+            style="float: right; margin-bottom: 10px; "
             type="is-primary is-light"
             @click="CreateTournament()" v-permission="'CreateTournament'"
             >新增比賽</b-button
-          >
-          <!--@details-open="(row) => showDetail(row['tournamentid'])"
-        @details-open="(row) => $buefy.toast.open(`Expanded ${row['tournamentid']}`)"   :columns="columns"
-        -->
+          >     
+         
           <b-table
             id="tournamenttable"
             :data="listData"
@@ -39,6 +37,7 @@
               label="比賽日期"
               :td-attrs="columnTdAttrs"
               :th-attrs="columnThAttrs"
+              :tr-attrs="columnTRAttrs"
               :searchable=true
               v-slot="props"
             >
@@ -50,6 +49,7 @@
               style="width: 50px"
               :td-attrs="columnTdAttrs"
               :th-attrs="columnThAttrs"
+              :tr-attrs="columnTRAttrs"
               v-slot="props"
             >
               <b-button
@@ -87,8 +87,10 @@
                     <b-button
                       @click="EditSession(item.sessionid)"
                       type="is-danger"
+                      size="is-small"
                       style="float: right"                     
                       v-permission="'EditSession'"
+                      class="EditSession"
                     >
                       <b-icon
                         pack="fas"
@@ -97,7 +99,7 @@
                         style="display: inline-block"
                       ></b-icon>
                       <span style="margin-left: 5px; display: inline-block"
-                        >編輯場次資訊</span
+                        >編輯場次</span
                       ></b-button
                     >
                   </span>
@@ -145,6 +147,7 @@
                                 native-value="2"
                                 type="is-danger is-light is-outlined"
                                 v-permission="'clickrb'"
+                                class="clickrb"
                                 >
                                 <template v-if="item.mstatus===2">
                                   <b-icon icon="check"></b-icon>
@@ -157,6 +160,7 @@
                                 native-value="1"
                                 type="is-success is-light is-outlined"
                                 v-permission="'clickrb'"
+                                class="clickrb"
                                 >
                                 <template v-if="item.mstatus===1">
                                   <b-icon icon="check"></b-icon>
@@ -167,7 +171,9 @@
                             <b-radio-button v-model="item.mstatus" @click.native="clickrb(0,item.sessionid)"
                                 native-value="0"
                                 type="is-primary is-light is-outlined"
-                                v-permission="'clickrb'">
+                                v-permission="'clickrb'"
+                                class="clickrb"
+                                >
                                 <template v-if="item.mstatus===0">
                                   <b-icon icon="check"></b-icon>
                                 </template>
@@ -344,6 +350,20 @@
 
 
   <style>
+ @media only screen and (max-width: 480px)  {
+
+.clickrb{
+  width: 77px;
+  
+}
+.b-table .table tr.detail .detail-container{
+  padding: 0px !important;;
+}
+.EditSession{
+  float: none !important;
+}
+
+     }
 .tile-content:before,
 .tile-content:after {
   content: "";
@@ -481,11 +501,7 @@ th {
   margin-bottom: 15px;
   text-transform: uppercase;
 }
-@media only screen and (min-width: 3800px) {
-  .tile-header {
-    text-align: center;
-  }
-}
+
 .tile-content {
   height: 99%;
   margin: 0 auto;
@@ -567,6 +583,8 @@ th {
 .th-wrap {
   justify-content: center;
 }
+
+
 </style>
 
 
@@ -826,11 +844,17 @@ export default {
     //table th 格式
     columnThAttrs() {
       return {
-        class: "ttzc-header ",
+        class: "ttzc-header col-sm-3",
         style: {
           "text-align": "center !important",
           color: "white",
         },
+      };
+    },
+    columnTRAttrs() {
+      return {
+        class: "row",
+        
       };
     },
     //過濾場次資料

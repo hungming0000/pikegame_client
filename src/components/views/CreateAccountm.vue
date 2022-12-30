@@ -49,7 +49,7 @@
                 </option>
               </b-select>
             </b-field>
-            <br />
+            
             <b-button type="submit" variant="success" @click="CreateAccountm"
               >儲存</b-button
             >
@@ -156,6 +156,16 @@ export default {
 };
 </script>
     <style scoped>
+@media only screen and (max-width: 480px) {
+  .modal-content {
+    width: 82% !important;
+    height: 65%;
+    margin-top: 130px;
+  }
+  .close {
+    margin: 34.7% 0 0 -53px !important;
+  }
+}
 @media only screen and (min-width: 769px) {
   .modal-content,
   .modal-card {

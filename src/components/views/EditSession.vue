@@ -185,8 +185,7 @@ export default {
     },
     //取得場次
     GetSession() {
-        
-        const url = this.GLOBAL.ApiUrl;
+      const url = this.GLOBAL.ApiUrl;
       axios
         .post(
           url + "/Pikegame/Session/GetSessionForWebByid",
@@ -200,14 +199,11 @@ export default {
             this.blue_accountid = response.data.Data[0].blue_accountid;
             this.red_accountid = response.data.Data[0].red_accountid;
             this.judge_accountid = response.data.Data[0].accountid;
-            
-            
           } else {
             this.error = response.data.Message;
           }
         })
         .catch((error) => console.log(error));
-
     },
   },
   mounted() {
@@ -223,6 +219,16 @@ export default {
 };
 </script>
     <style scoped>
+@media only screen and (max-width: 480px)  {
+  .modal-content {
+    width: 80% !important;
+    height: 65%;
+    margin-top: 130px;
+  }
+  .close {
+    margin: 34.7% 0 0 -53px !important;
+  }
+}
 @media only screen and (min-width: 769px) {
   .modal-content,
   .modal-card {

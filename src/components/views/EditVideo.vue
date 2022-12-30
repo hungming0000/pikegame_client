@@ -104,6 +104,20 @@
   };
   </script>
         <style scoped>
+           @media only screen and (max-width: 480px)  {
+  .modal-content {
+    width: 80% !important;
+    height: 65%;
+    margin-top: 130px;
+  }
+  .close {
+    margin: 34.7% 0 0 -53px !important;
+  }
+  .modal-content {
+  width: 80% !important;
+  height: 45% !important;
+  }
+}
   @media only screen and (min-width: 769px) {
     .modal-content,
     .modal-card {

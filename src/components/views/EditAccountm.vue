@@ -9,9 +9,6 @@
               <b-input v-model="accountid" disabled></b-input>
             </b-field>
 
-
-
-
             <label for="accountname">使用者名稱</label>
             <b-field style="width: 50%; margin-left: 25%">
               <b-input
@@ -48,8 +45,8 @@
                   {{ item.accountgroupname }}
                 </option>
               </b-select>
-            </b-field>           
-            <br />
+            </b-field>
+           
             <b-button type="submit" variant="success" @click="EditAccountm"
               >儲存</b-button
             >
@@ -88,7 +85,6 @@ export default {
       this.handleClose();
     },
     GetAccount() {
-     
       const url = this.GLOBAL.ApiUrl;
       axios
         .post(
@@ -176,6 +172,16 @@ export default {
 };
 </script>
       <style scoped>
+@media only screen and (max-width: 480px) {
+  .modal-content {
+    width: 82% !important;
+    height: 65%;
+    margin-top: 130px;
+  }
+  .close {
+    margin: 34.7% 0 0 -53px !important;
+  }
+}
 @media only screen and (min-width: 769px) {
   .modal-content,
   .modal-card {

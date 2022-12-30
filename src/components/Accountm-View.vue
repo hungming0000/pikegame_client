@@ -7,6 +7,7 @@
           type="is-primary is-light"
           @click="CreateAccountm()"
           v-permission="'CreateAccountm'"
+          class="CreateAccountm"
           >新增使用者</b-button
         >
         <b-table
@@ -119,18 +120,18 @@
   </div>
 </template>
 
+<style scoped>
+@media only screen and (max-width: 480px)  {
+.CreateAccountm{
+  float: none !important;
+}
+
+     }
+
+</style>
 
 
 <script>
-/**
- * @name makeAllSortable
- * @description Makes the specified tables sortable. If no arguments are passed
- * it will make all tables on the page it is run on sortable.
- * @param {string} [tableClass] - Class name for the table or tables you want to
- * be sortable. If undefined function will instead look for all table elements
- * @param {HTMLElement} [parent=document.body] - The parent element of the tables
- * specified in the tableClass argument
- */
 import axios from "axios";
 // import 'bootstrap/dist/css/bootstrap.css';
 // import 'bootstrap-vue/dist/bootstrap-vue.css';
