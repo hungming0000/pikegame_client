@@ -2,7 +2,7 @@
   <div class="modal-overlay">
     <div class="modal-content">
       <!-- <div class="modal-header"></div> -->
-      <div class="modal-body">
+      <div class="modal-body">       
         <div class="cbtn-wrap">
           <div id="cbtn-title"></div>
           <div class="cbtn-nav" id="nav-prev">
@@ -14,30 +14,22 @@
           <div class="cbtn-nav" id="nav-next">
             <i class="fas fa-chevron-right"></i>
           </div>
-          <!-- <div class="b-table"> -->
-            <div>
-          <div class="table-wrapper has-mobile-cards">
-          <table class="table">
-          <thead>
+          <table class="container">
             <tr>
               <th
                 v-for="column in Object.keys(SessiondetailList[0])"
                 :key="column"
                 style="color: white; width: 100px"
-                draggable="false"
               >
                 {{ column }}
               </th>
-            </tr> 
-            </thead>
-            <tbody>
+            </tr>
             <tr v-for="item in SessiondetailList" :key="item.accountid">
               <td
                 style="color: #a7a1ae; width: auto"
                 align="center"
                 v-for="index in Object.keys(item)"
                 :key="index"
-                draggable="false"
               >
                 <span v-if="item['選手'] == 'id'">
                   <span v-if="index == '選手'"> 編輯 </span>
@@ -60,10 +52,7 @@
                 </span>
               </td>
             </tr>
-          </tbody>
           </table>
-        </div>
-        </div>
         </div>
       </div>
       <!-- <div class="modal-footer">
@@ -96,7 +85,7 @@ export default {
   components: {
     EditScoreModal,
   },
-  inject: ["GetSessiondetail", "reload"],
+  inject: ["GetSessiondetail","reload"],
   name: "Modal-view",
   props: ["sessionid", "SessiondetailList"],
   data: function () {
@@ -131,79 +120,27 @@ export default {
     },
     EditScore(sessiondetialid) {
       this.showEditScoreModal = true;
-      this.Parentsessiondetialid = sessiondetialid;
-      this.Parentsessionid = this.sessionid;
+      this.Parentsessiondetialid = sessiondetialid;     
+      this.Parentsessionid = this.sessionid;  
     },
     reloaddetial() {
-      this.showEditScoreModal = false;
-
+      this.showEditScoreModal = false;     
+      
       this.isReloadData = false;
       this.$emit("GetSessiondetail");
       this.$emit("reload");
-
+      
       this.$nextTick(() => {
         this.isReloadData = true;
       });
-      
-    },
-    detialfilter(thname,row){
 
-      let list =this.SessiondetailList;
-      let list2 =list[row];
-
-      return list2[thname];
-    },
-    //table td 格式
-    columnTdAttrs() {
-      return {
-        // colspan: 10,
-        //class: 'has-text-weight-bold ttzc-header',
-        class: "has-text-weight-bold ",
-        style: {
-          "text-align": "center !important",
-        },
-      };
-    },
-    //table th 格式
-    columnThAttrs() {
-      return {
-        class: "ttzc-header",
-        style: {
-          "text-align": "center !important;width:35px!important;",
-          color: "white",
-        },
-      };
-    },
+      console.log('reloaddetial')
+    },       
   },
-  mounted() {
-   
-    
-  },
+  mounted() {},
 };
 </script>
 <style scoped>
-  @media only screen and (max-width: 480px)  {
-  .modal-content {
-    width: 82% !important;
-    height: 65%;
-    margin-top: 130px;
-  }
-  .close {
-    margin: 34.7% 0 0 -53px !important;
-  }
-  /* .modal-overlay{
-
-  } */
-}
-@media screen  and (max-width: 900px) and  (orientation: landscape) {
-  .modal-overlay{
-    top:auto !important;
-  }
-  .modal-content{
-    height: 80% !important;
-    margin-top: 10px;
-  }
-}
 @media only screen and (min-width: 769px) {
   .modal-content,
   .modal-card {
@@ -260,9 +197,8 @@ button {
 
 .modal-content {
   width: 60%;
-  height: 40%;
-  /* margin-top: 189px;   */
-  margin-top: 10%; 
+  height: 75%;
+  margin-top: 189px;
 }
 .modal-body {
   /* background-color: #000; */
@@ -291,7 +227,7 @@ body {
 .cbtn-wrap {
   overflow: hidden;
   text-align: center;
-  margin-top: 5px;
+  margin-top: 50px;
 }
 #cbtn-title {
   position: relative;
@@ -310,7 +246,7 @@ body {
   position: relative;
   z-index: 0;
   cursor: pointer;
-  margin: 13px 20px;
+  margin: 40px 20px;
   padding: 10px 25px;
   border-radius: 100px;
   font-family: Montserrat;
