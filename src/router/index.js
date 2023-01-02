@@ -8,6 +8,7 @@ import WisdomGunheadView from '../components/views/FunctionWisdomGunhead.vue'
 import HomeIndexView from '../components/HomeIndex-View.vue'
 import AdSettingView from '../components/AdSetting-View.vue'
 import CarouseSettinglView from '../components/CarouselSettings-View.vue'
+import MatchScoreView from '../components/MatchScore-View.vue'
 
 
 
@@ -69,6 +70,14 @@ const routes = [
     path: '/WisdomGunhead',
     name: 'WisdomGunhead',
     component: WisdomGunheadView,
+    meta:{
+      keepAlive: true
+    }
+  },
+  {
+    path: '/MatchScore',
+    name: 'MatchScore',
+    component: MatchScoreView,
     meta:{
       keepAlive: true
     }

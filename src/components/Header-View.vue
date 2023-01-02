@@ -7,6 +7,10 @@
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
       <b-collapse id="nav-collapse" is-nav>
+        
+        <b-navbar-nav>
+          <b-nav-item :to="{ path: '/MatchScore' }">大螢幕比分表</b-nav-item>
+        </b-navbar-nav>
         <b-navbar-nav>
           <b-nav-item :to="{ path: '/Accountm' }">帳號管理</b-nav-item>
         </b-navbar-nav>

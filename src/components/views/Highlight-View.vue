@@ -3,7 +3,7 @@
     <div class="container h-100">
       <div class="row p-6 h-100 justify-content-center align-items-center">
         <!--banner畫面-->
-        <div class="col-sm-12 col-md-12" style="text-align: center;">
+        <div class="col-sm-12 col-md-12 videobanner" style="text-align: center;">
           <section>
             <LazyYoutube
               ref="youtubeLazyVideo"
@@ -20,6 +20,7 @@
 </template>
 
 <script>
+import axios from "axios";
 export default {
   name: "highlight-banner",
   props: {
@@ -28,7 +29,8 @@ export default {
   components: {},
   data() {
     return {
-      youtubeLink: "https://www.youtube.com/watch?v=aqz-KE-bpKQ",      
+      // youtubeLink: "https://www.youtube.com/watch?v=aqz-KE-bpKQ",    
+      youtubeLink:'',  
     };
   },
   methods: {
@@ -39,11 +41,38 @@ export default {
       if (platform === "youtube") this.youtubeLink = e.target.value;
      
     },
+    async GetVideosetting(){
+      const url = this.GLOBAL.ApiUrl;
+      await axios
+        .post(url + "/Pikegame/Videosetting/GetPutonVideo", {})
+        .then((response) => {
+          this.loading = false;
+          if (response.data.isSuccess == true) {
+            this.youtubeLink = response.data.Data[0].videourl;
+           
+          } else {
+            this.error = response.data.Message;
+          }
+        })
+        .catch((error) => console.log(error));
+
+    }
   },
+  mounted(){
+    this.GetVideosetting();
+  }
 };
 </script>
 
 <style scoped>
+@media only screen and (max-width: 480px)  {
+  .p-6 {
+    padding: 0rem !important;
+}
+.videobanner{
+  margin-top: 180px;
+}
+}
 .highlight-banner {
  
   width: 100%;
