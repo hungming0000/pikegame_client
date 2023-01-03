@@ -7,7 +7,6 @@
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
       <b-collapse id="nav-collapse" is-nav>
-        
         <b-navbar-nav>
           <b-nav-item :to="{ path: '/MatchScore' }">大螢幕比分表</b-nav-item>
         </b-navbar-nav>
@@ -44,9 +43,8 @@
                 size="is-large"
                 type="is-success">
             </b-icon></b-nav-item> -->
-            <b-nav-item>
-            {{ username }}</b-nav-item
-            >
+            <b-nav-item :to="{ path: '/' }">輪播頁|</b-nav-item>          
+            <b-nav-item> {{ username }}</b-nav-item>
             <b-nav-item @click="logout">登出</b-nav-item>
           </b-nav-form>
 
@@ -81,7 +79,7 @@ export default {
   props: ["username"],
   data() {
     return {
-      name:null,
+      name: null,
       level: null,
       isLogin: "no",
     };
@@ -102,6 +100,5 @@ export default {
       });
     },
   },
- 
 };
 </script>
