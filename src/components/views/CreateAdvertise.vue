@@ -143,7 +143,7 @@ export default {
           advertistimeperiod: this.advertistimeperiod,
           advertiscosts: this.advertiscosts,
           adsstatus: this.adsstatus,
-          modifyuser: JSON.parse(this.modifyuser),
+          modifyuser: this.modifyuser,
           adsstatusName: this.adsstatusName,
         })
         .then((response) => {

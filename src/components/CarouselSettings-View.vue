@@ -25,16 +25,30 @@
             </template>
             <VideoSettingModal></VideoSettingModal>
         </b-tab-item>
+        <b-tab-item>
+            <template #header>
+                <b-icon
+                pack="fas"
+                icon="newspaper"
+                size="is-medium"
+                style="display: inline-block"                
+              ></b-icon>
+                <span> 最新消息設定 </span>
+            </template>
+            <NewssettingModal></NewssettingModal>
+        </b-tab-item>
     </b-tabs>
 </template>
 
 <script>
  import AdSettingModal from "./AdSetting-View.vue";
  import VideoSettingModal from "./VideoSetting-View.vue";
+ import NewssettingModal from "./Newssetting-View.vue";
 export default {
     components: {
         AdSettingModal,
-        VideoSettingModal
+        VideoSettingModal,
+        NewssettingModal
     },
     data() {
         return {

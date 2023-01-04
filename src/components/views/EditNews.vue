@@ -4,30 +4,19 @@
         <div class="modal-body">
           <div class="cbtn-wrap">
             <form class="form-signup" action="" method="post" name="form">
-              <label for="videourl">影片路徑</label>
+              <label for="newsdescription">最新消息內容</label>
               <b-field style="width: 50%; margin-left: 25%">
                 <b-input
-                  v-model="videourl"
-                  placeholder="請輸入影片路徑"
-                  required
-                ></b-input>
-              </b-field>  
-              <label for="videostatus">狀態</label>
-              <b-field style="width: 50%; margin-left: 25%">
-                <b-select
-                  placeholder="請選擇狀態"
-                  v-model="videostatus"
-                  required
-                  expanded
-                >
-                  <option value="1">上架</option>
-                  <option value="0">下架</option>
-                </b-select>
-              </b-field>           
-              <b-button type="submit" variant="success" @click="EditVideo"
+                maxlength="100"
+                type="textarea"
+                v-model="newsdescription"
+                placeholder="最新消息內容"
+                required
+              ></b-input>
+              </b-field>                         
+              <b-button type="submit" variant="success" @click="EditNews"
                 >儲存</b-button
-              >
-              <!-- <a ng-click="checked = !checked" class="btn-signup">儲存</a> -->
+              >              
             </form>
           </div>
         </div>
@@ -44,11 +33,10 @@
   export default {   
     inject: ["reload"],
     name: "Modal-view",
-    props: ["videoid"],
+    props: ["newsid"],
     data: function () {
       return {
-        videourl: "",
-        videostatus: "",       
+        newsdescription: "",      
         modifyuser: "",
       };
     },
@@ -57,15 +45,13 @@
       handleSave() {
         this.handleClose();
       },
-      //儲存影片
-      EditVideo() {        
-        console.log(this.modifyuser)
+      //儲存最新消息
+      EditNews() {      
         const url = this.GLOBAL.ApiUrl;
         axios
-          .post(url + "/Pikegame/Videosetting/EditVideo", {
-            videoid:this.videoid,
-            videourl: this.videourl,           
-            videostatus: this.videostatus,          
+          .post(url + "/Pikegame/Newssetting/EditNews", {
+            newsid:this.newsid,
+            newsdescription: this.newsdescription,                            
             modifyuser: this.modifyuser          
           })
           .then((response) => {
@@ -78,17 +64,15 @@
           })
           .catch((error) => console.log(error));
       },
-      async GetVideosettingById(){
+      async GetNewssettingById(){
        
         const url = this.GLOBAL.ApiUrl;
         await axios
-          .post(url + "/Pikegame/Videosetting/GetVideosettingById", JSON.stringify(this.videoid))
+          .post(url + "/Pikegame/Newssetting/GetNewssettingById", JSON.stringify(this.newsid))
           .then((response) => {
             this.loading = false;
             if (response.data.isSuccess == true) {              
-              this.videourl=response.data.Data[0].videourl;
-              this.videostatus=response.data.Data[0].videostatus;
-              this.modifyuser=response.data.Data[0].modifyuser;
+              this.newsdescription=response.data.Data[0].newsdescription;  
 
             } else {
               this.error = response.data.Message;
@@ -101,7 +85,7 @@
       this.modifyuser= sessionStorage.getItem("accountid");
     },
     mounted(){
-            this.GetVideosettingById();
+            this.GetNewssettingById();
     }
   };
   </script>

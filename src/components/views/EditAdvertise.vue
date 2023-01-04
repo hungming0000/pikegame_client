@@ -119,8 +119,9 @@ export default {
           advertistimeperiod: this.advertistimeperiod,
           advertiscosts: this.advertiscosts,
           adsstatus: this.adsstatus,
-          modifyuser: JSON.parse(this.modifyuser),
+          modifyuser:this.modifyuser,
           adsstatusName: this.adsstatusName,
+          advertiseid: this.advertiseid,
         })
         .then((response) => {
           this.loading = false;

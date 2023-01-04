@@ -283,8 +283,8 @@ export default {
       };
     },
     reload() {
-      this.showACreateModal = false;
-      this.showAEditModal = false;
+      this.showAdCreateModal = false;
+      this.showAdeditModal = false;
       this.GetAdvertisesetting();
 
       this.isReloadData = false;

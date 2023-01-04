@@ -4,35 +4,24 @@
       <div class="modal-body">
         <div class="cbtn-wrap">
           <form class="form-signup" action="" method="post" name="form">
-            <label for="videourl">影片路徑</label>
+            <label for="newsdescription">最新消息內容</label>
             <b-field style="width: 50%; margin-left: 25%">
               <b-input
-                v-model="videourl"
-                placeholder="請輸入影片路徑"
+                maxlength="100"
+                type="textarea"
+                v-model="newsdescription"
+                placeholder="最新消息內容"
                 required
               ></b-input>
             </b-field>
-            <label for="videostatus">狀態</label>
-            <b-field style="width: 50%; margin-left: 25%">
-              <b-select
-                placeholder="請選擇狀態"
-                v-model="videostatus"
-                required
-                expanded
-              >
-                <option value="1">上架</option>
-                <option value="0">下架</option>
-              </b-select>
-            </b-field>
-            <b-button type="submit" variant="success" @click="CreateVideo"
+            <b-button type="submit" variant="success" @click="CreateNews"
               >儲存</b-button
             >
-            <!-- <a ng-click="checked = !checked" class="btn-signup">儲存</a> -->
           </form>
         </div>
       </div>
     </div>
-    <div id="acclose" class="close btn-close" @click="$emit('close-modal')">
+    <div id="vdclose" class="close btn-close" @click="$emit('close-modal')">
       <img class="close-img" src="../../assets/close-button.png" alt="" />
     </div>
   </div>
@@ -44,11 +33,9 @@ import axios from "axios";
 export default {
   inject: ["reload"],
   name: "Modal-view",
-  //   props: ["accountid"],
   data: function () {
     return {
-      videourl: "",
-      videostatus: "",
+      newsdescription: "",
       modifyuser: "",
     };
   },
@@ -57,13 +44,13 @@ export default {
     handleSave() {
       this.handleClose();
     },
-    //儲存廣告
-    CreateVideo() {
+    //儲存最新消息
+    CreateNews() {
       const url = this.GLOBAL.ApiUrl;
       axios
-        .post(url + "/Pikegame/Videosetting/CreateVideo", {
-          videourl: this.videourl,
-          videostatus: this.videostatus,
+        .post(url + "/Pikegame/Newssetting/CreateNews", {
+          videoid: this.videoid,
+          newsdescription: this.newsdescription,
           modifyuser: this.modifyuser,
         })
         .then((response) => {
@@ -93,10 +80,9 @@ export default {
     margin: 34.7% 0 0 -53px !important;
   }
   .modal-content {
-  width: 80% !important;
-  height: 45% !important;
-  
-}
+    width: 80% !important;
+    height: 45% !important;
+  }
 }
 @media only screen and (min-width: 769px) {
   .modal-content,
