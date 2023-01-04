@@ -72,6 +72,24 @@
               >
               </b-input>
             </b-field>
+            <label for="advertisetitle">廣告標題</label>
+            <b-field style="width: 50%; margin-left: 25%">
+              <b-input
+                v-model="advertisetitle"
+                placeholder="影片標題"
+                required
+              ></b-input>
+            </b-field>
+            <label for="advertisedescription">廣告描述</label>
+              <b-field style="width: 50%; margin-left: 25%">
+                <b-input
+                maxlength="100"
+                type="textarea"
+                v-model="advertisedescription"
+                placeholder="廣告描述"
+                required
+              ></b-input>
+              </b-field>      
             <label for="adsstatus">狀態</label>
             <b-field style="width: 50%; margin-left: 25%">
               <b-select
@@ -118,6 +136,8 @@ export default {
       advertiscosts: "",
       adsstatus: "",
       adsstatusName: "",
+      advertisetitle: "",
+      advertisedescription: "",
       modifyuser: "",
       file: null,     
       formData: new FormData(),
@@ -143,6 +163,8 @@ export default {
           advertistimeperiod: this.advertistimeperiod,
           advertiscosts: this.advertiscosts,
           adsstatus: this.adsstatus,
+          advertisetitle: this.advertisetitle,
+          advertisedescription: this.advertisedescription,
           modifyuser: this.modifyuser,
           adsstatusName: this.adsstatusName,
         })

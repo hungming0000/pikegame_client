@@ -65,6 +65,26 @@
           </b-table-column>
           <b-table-column
             class="th-wrap is-centered"
+            field="advertisetitle"
+            label="廣告標題"
+            :td-attrs="columnTdAttrs"
+            :th-attrs="columnThAttrs"
+            v-slot="props"
+          >
+            {{ props.row.advertisetitle }}
+          </b-table-column>
+          <b-table-column
+            class="th-wrap is-centered"
+            field="advertisedescription"
+            label="廣告描述"
+            :td-attrs="columnTdAttrs"
+            :th-attrs="columnThAttrs"
+            v-slot="props"
+          >
+            {{ props.row.advertisedescription }}
+          </b-table-column>
+          <b-table-column
+            class="th-wrap is-centered"
             field="advertiscosts"
             label="廣告費用"
             :td-attrs="columnTdAttrs"

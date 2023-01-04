@@ -16,6 +16,8 @@ Vue.use(VueRouter)
 // 定義全域變數
 Vue.prototype.GLOBAL = global_//掛載到Vue例項上面
 
+
+
 const routes = [
   {
     path: '/Login',

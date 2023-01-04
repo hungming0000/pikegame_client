@@ -891,16 +891,16 @@ export default {
       const wsuri = "wss://localhost:44302/api/NotifyWebSocket";
       //const wsuri = "wss://www.hungminginfo.com/pikegame_API/api/NotifyWebSocket";
       this.websock = new WebSocket(wsuri);
-      // 客户端接收服务端数据时触发
+      // 客戶端接收服務端數據時觸發
       this.websock.onmessage = this.websocketonmessage;
-      // 连接建立时触发
+      // 連接建立時觸發
       this.websock.onopen = this.websocketonopen;
-      // 通信发生错误时触发
+      // 通信發生錯誤時觸發
       this.websock.onerror = this.websocketonerror;
-      // 连接关闭时触发
+      // 連接關閉時觸發
       this.websock.onclose = this.websocketclose;
     },
-    // 连接建立时触发
+    // 連接建立時觸發
     websocketonopen() {
       //开启心跳
       //this.start();
@@ -912,12 +912,12 @@ export default {
       // let actions = {"room":"007854ce7b93476487c7ca8826d17eba","info":"1121212"};
       // this.websocketsend(JSON.stringify(actions));
     },
-    // 通信发生错误时触发
+    // 通訊發生錯誤時觸發
     websocketonerror() {
       console.log("出现错误");
       this.reconnect();
     },
-    // 客户端接收服务端数据时触发
+    // 客戶端接收服務端數據時觸發
     websocketonmessage(e) {
       var str = e.data;
       str = str.split("_");
@@ -953,7 +953,7 @@ export default {
     websocketsend(Data) {
       this.websock.send(Data); //这里可以自己跟后端约定
     },
-    // 连接关闭时触发
+    // 連接關閉時觸發
     websocketclose(e) {
       //关闭
       console.log("断开连接", e);
@@ -1061,12 +1061,12 @@ export default {
     this.initWebSocket();
   },
   destroyed() {
-    this.websock.close(); //离开路由之后断开websocket连接
+    this.websock.close(); //離開路由之後斷開websocket連接
   },
   // 销毁定时器
   beforeDestroy() {
     if (this.formatDate) {
-      clearInterval(this.formatDate); // 在Vue实例销毁前，清除时间定时器
+      clearInterval(this.formatDate); //  在Vue實例銷毀前，清除時間定時器
     }
   },
 };

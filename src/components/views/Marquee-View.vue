@@ -3,16 +3,21 @@
     <div class="container h-100">
       <div class="row h-100 justify-content-center align-items-center">
         <!--header畫面左區-->
-        <div class="col-sm-12  col-md-12">
+        <div class="col-sm-12 col-md-12">
           <div class="header-content">
             <!-- <marquee-text>
                     {{mag}} 
                 </marquee-text> -->
             <!-- simple marquee text -->
-            <marquee-text :duration="60" :paused="paused" >
-              <div  @mouseenter="paused = !paused" @mouseleave="paused = false" style="background-color:floralwhite" v-html="mag">
-              <!-- {{mag}} -->
-            </div>
+            <marquee-text :duration="60" :paused="paused">
+              <div
+                @mouseenter="paused = !paused"
+                @mouseleave="paused = false"
+                style="background-color: floralwhite"
+                v-html="mag"
+              >
+                <!-- {{mag}} -->
+              </div>
             </marquee-text>
           </div>
         </div>
@@ -34,14 +39,14 @@ export default {
   },
   data() {
     return {
-      SessionList: [],
+      NewsList: [],
       paused: false,
       mag: "",
-      //mag:"其他公告: 其他選項WNBA美國女子職業籃球聯賽-季後賽.因本為籃球選項賽事，凡下注於該賽事之單式全場視為有效注單，{則過關以1計算}如造成您的不便敬請見諒!!!***謝謝***",
       intervalId: null, //data 定義一個定時器id
     };
   },
   methods: {
+    //取得場次
     GetSessionForWebNow() {
       const url = this.GLOBAL.ApiUrl;
       axios
@@ -63,9 +68,31 @@ export default {
         })
         .catch((error) => console.log(error));
     },
+    //取得最新消息
+    GetNewssetting() {
+      const url = this.GLOBAL.ApiUrl;
+      axios
+        .post(
+          url + "/Pikegame/Newssetting/GetNewssetting",
+          this.Parentsessionid
+        )
+        .then((response) => {
+          this.loading = false;
+          if (response.data.isSuccess == true) {
+            this.NewsList = response.data.Data.slice();
+
+            
+              this.mag =response.data.Data[0].newsdescription;
+            
+          } else {
+            this.error = response.data.Message;
+          }
+        })
+        .catch((error) => console.log(error));
+    },
   },
   mounted() {
-    this.GetSessionForWebNow();
+    this.GetNewssetting();
   },
 };
 </script>
@@ -77,6 +104,6 @@ export default {
   /* min-height: 500px; */
   text-align: left;
   /* background-color: rgb(87, 134, 194); lightblue*/
-  background-color:floralwhite;
+  background-color: floralwhite;
 }
 </style>

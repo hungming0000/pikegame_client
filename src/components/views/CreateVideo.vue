@@ -12,6 +12,24 @@
                 required
               ></b-input>
             </b-field>
+            <label for="videotitle">影片標題</label>
+            <b-field style="width: 50%; margin-left: 25%">
+              <b-input
+                v-model="videotitle"
+                placeholder="影片標題"
+                required
+              ></b-input>
+            </b-field>
+            <label for="videodescription">影片描述</label>
+              <b-field style="width: 50%; margin-left: 25%">
+                <b-input
+                maxlength="100"
+                type="textarea"
+                v-model="videodescription"
+                placeholder="影片描述"
+                required
+              ></b-input>
+              </b-field>      
             <label for="videostatus">狀態</label>
             <b-field style="width: 50%; margin-left: 25%">
               <b-select
@@ -49,6 +67,8 @@ export default {
     return {
       videourl: "",
       videostatus: "",
+      videotitle: "",
+      videodescription: "",
       modifyuser: "",
     };
   },
@@ -64,6 +84,8 @@ export default {
         .post(url + "/Pikegame/Videosetting/CreateVideo", {
           videourl: this.videourl,
           videostatus: this.videostatus,
+          videotitle: "",
+          videodescription: "",
           modifyuser: this.modifyuser,
         })
         .then((response) => {

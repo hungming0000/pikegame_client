@@ -35,6 +35,26 @@
           </b-table-column>
           <b-table-column
             class="th-wrap is-centered"
+            field="videotitle"
+            label="影片標題"
+            :th-attrs="columnThAttrs"
+            :td-attrs="columnTdAttrs"
+            v-slot="props"
+          >
+            {{ props.row.videotitle }}
+          </b-table-column>
+          <b-table-column
+            class="th-wrap is-centered"
+            field="videodescription"
+            label="影片描述"
+            :th-attrs="columnThAttrs"
+            :td-attrs="columnTdAttrs"
+            v-slot="props"
+          >
+            {{ props.row.videodescription }}
+          </b-table-column>
+          <b-table-column
+            class="th-wrap is-centered"
             field="videostatus"
             label="狀態"
             :td-attrs="columnTdAttrs"

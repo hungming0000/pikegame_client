@@ -49,6 +49,24 @@
               >
               </b-input>
             </b-field>
+            <label for="advertisetitle">廣告標題</label>
+            <b-field style="width: 50%; margin-left: 25%">
+              <b-input
+                v-model="advertisetitle"
+                placeholder="影片標題"
+                required
+              ></b-input>
+            </b-field>
+            <label for="advertisedescription">廣告描述</label>
+              <b-field style="width: 50%; margin-left: 25%">
+                <b-input
+                maxlength="100"
+                type="textarea"
+                v-model="advertisedescription"
+                placeholder="廣告描述"
+                required
+              ></b-input>
+              </b-field>      
             <label for="adsstatus">狀態</label>
             <b-field style="width: 50%; margin-left: 25%">
               <b-select
@@ -96,6 +114,8 @@ export default {
       advertiscosts: "",
       adsstatus: "",
       adsstatusName: "",
+      advertisetitle: "",
+      advertisedescription: "",
       modifyuser: "",
     };
   },
@@ -121,6 +141,8 @@ export default {
           adsstatus: this.adsstatus,
           modifyuser:this.modifyuser,
           adsstatusName: this.adsstatusName,
+          advertisetitle: this.advertisetitle,
+          advertisedescription: this.advertisedescription,
           advertiseid: this.advertiseid,
         })
         .then((response) => {
@@ -153,6 +175,8 @@ export default {
             );
             this.advertistimeperiod = response.data.Data[0].advertistimeperiod;
             this.advertiscosts = response.data.Data[0].advertiscosts;
+            this.advertisetitle= response.data.Data[0].advertisetitle;
+            this.advertisedescription= response.data.Data[0].advertisedescription;
             this.adsstatus = response.data.Data[0].adsstatus;
             this.modifyuser = response.data.Data[0].modifyuser;
           } else {

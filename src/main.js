@@ -73,5 +73,26 @@ Vue.directive("permission", {
   }
 
 })
+//判斷目前是否登入來轉換頁面
+router.beforeEach((to, from, next) => {
+  const isLogin = sessionStorage.getItem('accountid');
+ 
+  if (isLogin) {
+    next();
+    if(to.path == '/Login') {           
+      router.push({ path: "/Home" });
+      
+    }
+  } else {
+    // if( to.path !== '/Login' && to.path !== '/')
+    if( to.path !== '/Login')
+    router.push({ path: "/Login" });
+      
+    else
+      next()
+  }
+})
+
+
 
 
