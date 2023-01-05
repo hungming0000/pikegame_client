@@ -84,8 +84,8 @@ export default {
         .post(url + "/Pikegame/Videosetting/CreateVideo", {
           videourl: this.videourl,
           videostatus: this.videostatus,
-          videotitle: "",
-          videodescription: "",
+          videotitle: this.videotitle,
+          videodescription: this.videodescription,
           modifyuser: this.modifyuser,
         })
         .then((response) => {
@@ -164,7 +164,7 @@ button {
 
 .modal-content {
   width: 45%;
-  height: 35%;
+  height: 65%;
   margin-top: 130px;
 }
 .modal-body {

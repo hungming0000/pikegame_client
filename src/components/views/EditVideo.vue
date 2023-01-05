@@ -188,7 +188,7 @@ button {
 
 .modal-content {
   width: 45%;
-  height: 35%;
+  height: 65%;
   margin-top: 130px;
 }
 .modal-body {

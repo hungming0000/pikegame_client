@@ -4,40 +4,36 @@
       <div class="row p-6 h-100 justify-content-center align-items-center">
         <!--banner畫面-->
         <div class="col-sm-12 col-md-12 videobanner" style="text-align: center">
-          <div>
-        <video-player :options="videoOptions"/>
-    </div>
-          <swiper
-            :options="swiperOption"
-            @swiper="onSwiper"
-            @slideChange="onSlideChange"
-          >
-            <swiper-slide v-for="item in youtubelist" :key="item.videoid">
-            
-              <!-- <video
-                ref="video"
-                class="video-js vjs-default-skin"
-                width="600"
-                height="400"
-                controls
-              >
-                <source src="https://www.youtube.com/watch?v=R1oGwmHYnUQ&list=RDGMEMXdNDEg4wQ96My0DhjI-cIgVMR1oGwmHYnUQ&start_radio=1" />
-              </video> -->
-              <section> 
-                 <LazyYoutube
+          <section>
+           <!-- swiper輪播 -->
+<div class="swiper-container">
+   <div class="swiper-wrapper">
+       <div class="swiper-slide">
+           <video id="video" style="width: 100%;height: 100%;"  controls preload="none" poster="xxxx" class="video-js vjs-big-play-centered" >
+            <source src="xxxx" type="video/mp4">
+           </video>
+       </div>
+       <div class="swiper-slide"> <video id="video" style="width: 100%;height: 100%;"  controls preload="none" poster="xxxx" class="video-js vjs-big-play-centered" >
+            <source src="xxxx" type="video/mp4">
+           </video></div>
+        <div class="swiper-slide"><img src="xxxx" alt=""></div>
+        <div class="swiper-slide"><img src="xxxx" alt=""></div>
+        <div class="swiper-slide"><img src="xxxx" alt=""></div>
+   </div>
+   <!-- 如果需要分頁器 -->
+   <div class="swiper-pagination"></div>
+</div>
+                <!-- <LazyYoutube
                   ref="youtubeLazyVideo"
-                  :src="item.videourl"
+                  :src="youtubeLink"
                   max-width="720px"
                   aspect-ratio="16:9"
                   thumbnail-quality="standard"
-                /> 
+                /> -->
                 
-              </section>
-              <b-button type="is-warning is-light">{{ item.videotitle }}</b-button>
-            </swiper-slide>
-          </swiper>
-
-        
+             
+          </section>
+          <b-button type="is-warning is-light">{{ videotitle }}</b-button>
         </div>
       </div>
     </div>
@@ -46,23 +42,22 @@
 
 <script>
 import axios from "axios";
-import { Swiper, SwiperSlide } from "vue-awesome-swiper";
 export default {
   name: "highlight-banner",
   props: {
     msg: String,
   },
   components: {
-    "swiper-slide": SwiperSlide,
-    Swiper,    
+   
   },
   data() {
     return {
       // youtubeLink: "https://www.youtube.com/watch?v=aqz-KE-bpKQ",
       youtubelist: [],
       youtubeLink:
-        "https://www.youtube.com/watch?v=R1oGwmHYnUQ&list=RDGMEMXdNDEg4wQ96My0DhjI-cIgVMR1oGwmHYnUQ&start_radio=1",
-      videotitle: "",           
+        "https://www.youtube.com/watch?v=BrRog8JncTc&list=PLGMhuJ6tIxohdhNm-WJLS3h_K0pvgK9kQ",
+      videotitle: "",
+      
     };
   },
   methods: {
@@ -82,7 +77,7 @@ export default {
           this.loading = false;
           if (response.data.isSuccess == true) {
             this.youtubelist = response.data.Data.slice();
-           
+            console.log(" this.youtubelist", this.youtubelist);
           } else {
             this.error = response.data.Message;
           }
@@ -92,7 +87,6 @@ export default {
   },
   mounted() {
     this.GetVideosetting();
-    this.player = this.$video(this.$refs.video);
   },
 };
 </script>

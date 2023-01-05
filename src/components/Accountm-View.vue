@@ -3,7 +3,7 @@
     <div class="tile-content">
       <div class="ttzc-table-wrap">
         <b-button
-          style="float: right; margin-bottom: 10px; "
+          style="float: right; margin-bottom: 10px; z-index: 1;"
           type="is-primary is-light"
           @click="CreateAccountm()"
           v-permission="'CreateAccountm'"

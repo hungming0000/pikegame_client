@@ -1,63 +1,23 @@
 <template>
   <div class="homeindex-view">
-    <header style="background-color: #87b4dec2;">
-      <!-- <nav>
+  <header>
+  <nav>
     <div class="main-nav">
       <ul class="text-center">
         <li><a class="smoothScroll" href="#/Login">
-          
-              <b-icon
+           <!-- <b-icon
                 pack="fas"
-                icon="dollar-sign"
+                icon="user"
                 size="is-medium"
-                style="display: inline-block"                
-              ></b-icon>
-            </a></li> 
-        <li><a class="smoothScroll" href="#/Login">        
+                style="display: inline-block"
+                
+              ></b-icon> -->
               <font-awesome-icon :icon="['fas', 'user']"  />
             </a></li>        
       </ul>
     </div>
-  </nav> -->
-      <span class="titlest">大槍比賽裁判判分管理系統</span>
-      <nav role="navigation">
-        <ul class="vertical-list">
-          <li>
-            <a href="#Price"
-              ><b-icon
-                pack="fas"
-                icon="dollar-sign"
-                size="is-medium"
-                style="display: inline-block"
-              ></b-icon
-              >Price |</a
-            >
-          </li>
-          <li>
-            <a href="#about"
-              ><b-icon
-                pack="fas"
-                icon="phone"
-                size="is-medium"
-                style="display: inline-block"
-              ></b-icon
-              >About Me |</a
-            >
-          </li>
-          <li>
-            <a href="#/Login">
-              <b-icon
-                pack="fas"
-                icon="table"
-                size="is-medium"
-                style="display: inline-block"
-              ></b-icon
-              >Score Table</a
-            >
-          </li>
-        </ul>
-      </nav>
-    </header>
+  </nav>
+</header>
     <Marquee></Marquee>
     <Highlight></Highlight>
     <Advertise></Advertise>
@@ -82,17 +42,12 @@ export default {
 </script>
   
 <style scoped>
-.titlest {
-  /* background-color: #87b4dec2; */
-  color: white;
-  font-weight: bold;
-  font-size: x-large;
-}
 nav {
   z-index: 1;
   position: fixed;
   right: 0;
 }
+
 
 i {
   color: #fff;
@@ -101,13 +56,13 @@ i {
 ul {
   list-style: none;
   padding: 0;
-  /*reset margin*/
+  /*reset margin*/  
   margin: 0;
 }
 
 li {
   display: inline-block;
-  font-family: "Titillium Web", sans-serif;
+  font-family: 'Titillium Web', sans-serif;
   font-size: 1.2em;
 }
 
@@ -146,6 +101,7 @@ a:hover i {
   color: #337ab7;
 }
 
+
 /* id's */
 
 /* main nav */
@@ -167,4 +123,5 @@ a:hover i {
 .text-center {
   text-align: center;
 }
+
 </style>

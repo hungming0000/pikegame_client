@@ -24,6 +24,10 @@ import { checkArray } from "./store/array.js"
 import VueAwesomeSwiper from 'vue-awesome-swiper'
 import 'swiper/css/swiper.css'//輪播用
 import LazyTube from "vue-lazytube";//影片播放
+import Video from 'video.js'
+import 'video.js/dist/video-js.css'
+Vue.prototype.$video = Video;
+
 
 Vue.use(LazyTube);
 Vue.use(VueAwesomeSwiper);

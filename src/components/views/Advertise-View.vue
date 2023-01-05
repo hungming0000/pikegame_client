@@ -15,7 +15,8 @@
             /></swiper-slide> -->
             <swiper-slide v-for="item in AdlistData" :key="item.advertiseid">
               <img :src="require('@/assets/advertise/'+item.advertiseurl)" height="200px" width="500px"
-            /></swiper-slide>
+            />
+          </swiper-slide>
             
             <!-- <swiper-slide> <img :src="banner1" height="200px" width="500px"/></swiper-slide>
             <swiper-slide><img :src="banner2" height="180px" width="430px"/></swiper-slide>
