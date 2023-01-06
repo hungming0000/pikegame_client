@@ -70,6 +70,8 @@ a .icon-text {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  min-height: 969px;
+  background-image: url("../src/assets/bg6.jpg");
 }
 
 nav {

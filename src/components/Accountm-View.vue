@@ -56,6 +56,16 @@
           </b-table-column>
           <b-table-column
             class="th-wrap is-centered"
+            field="accountgroupname"
+            label="武館名稱"
+            :td-attrs="columnTdAttrs"
+            :th-attrs="columnThAttrs"
+            v-slot="props"
+          >
+            {{ props.row.accountgroupname }}
+          </b-table-column>
+          <b-table-column
+            class="th-wrap is-centered"
             label=""
             style="width: 50px"
             :td-attrs="columnTdAttrs"
@@ -169,7 +179,7 @@ export default {
         {
           class: "ttzc-header",
           field: "accountgroupname",
-          label: "帳號類型",
+          label: "武館名稱",
           centered: true,
         },
       ],

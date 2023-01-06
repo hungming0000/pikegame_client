@@ -38,13 +38,20 @@
                 required
               >
                 <option
-                  v-for="item in AccountgroupnameList"
+                  v-for="item in AccountstylenameList"
                   :value="item.accountstyle"
-                  :key="item.accountgroupname"
+                  :key="item.accountstylename"
                 >
-                  {{ item.accountgroupname }}
+                  {{ item.accountstylename }}
                 </option>
               </b-select>
+            </b-field>
+            <label for="accountgroupname">武館名稱</label>
+            <b-field style="width: 50%; margin-left: 25%">
+              <b-input
+                v-model="accountgroupname"
+                placeholder="請輸入武館名稱"                
+              ></b-input>
             </b-field>
            
             <b-button type="submit" variant="success" @click="EditAccountm"
@@ -71,7 +78,7 @@ export default {
   props: ["Paccountid"],
   data: function () {
     return {
-      AccountgroupnameList: [],
+      AccountstylenameList: [],
       accountid: "",
       accountname: "",
       accpassword: "",
@@ -106,14 +113,14 @@ export default {
         .catch((error) => console.log(error));
     },
     //帳號類型
-    GetAccountgroupname() {
+    GetAccountstylename() {
       const url = this.GLOBAL.ApiUrl;
       axios
-        .post(url + "/Accountm/GetAccountgroupname", {})
+        .post(url + "/Accountm/GetAccountstylename", {})
         .then((response) => {
           this.loading = false;
           if (response.data.isSuccess == true) {
-            this.AccountgroupnameList = response.data.Data;
+            this.AccountstylenameList = response.data.Data;
           } else {
             this.error = response.data.Message;
           }
@@ -140,33 +147,10 @@ export default {
           }
         })
         .catch((error) => console.log(error));
-    },
-    accountstyleChange(event) {
-      console.log(event.target.value);
-    },
-  },
-  watch: {
-    accountstyle: {
-      handler: function () {
-        switch (this.accountstyle) {
-          case 0: //比賽制定者
-            this.accountgroupname = "比賽制定者";
-            break;
-          case 1: //裁判
-            this.accountgroupname = "裁判";
-            break;
-          case 2: //選手
-            this.accountgroupname = "選手";
-            break;
-          case 3: //觀眾
-            this.accountgroupname = "觀眾";
-            break;
-        }
-      },
-    },
-  },
+    },   
+  },  
   mounted() {
-    this.GetAccountgroupname();
+    this.GetAccountstylename();
     this.GetAccount();
   },
 };

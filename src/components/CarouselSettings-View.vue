@@ -1,6 +1,6 @@
 <template>
     <b-tabs type="is-boxed">
-        <b-tab-item>
+        <b-tab-item style="background-color: white;">
             <template #header>
                 <b-icon
                 pack="fas"
@@ -60,3 +60,9 @@ export default {
     }
 }
 </script>
+<style>
+.tabs.is-boxed li:not(is-active) a{
+    background-color: white  ;;
+}
+
+</style>

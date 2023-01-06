@@ -99,3 +99,9 @@ export default {
   },
 };
 </script>
+<style scoped>
+.bg-info{
+  background-color: #487981!important;
+  /* background-image: url("../../src/assets/bg10.jpg"); */
+}
+</style>
