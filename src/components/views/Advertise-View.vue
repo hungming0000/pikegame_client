@@ -111,7 +111,8 @@ export default {
   /* min-height: 200px; */
   text-align: left;
   color: #ffffff;
-  background-color: darkslategray;
+  /* background-color: darkslategray; */
+  background-color: rgba(47,79,79,0.6);
 }
 .swiper-wrapper {
   text-align: center;

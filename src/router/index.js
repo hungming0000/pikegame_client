@@ -81,7 +81,7 @@ const routes = [
     name: 'MatchScore',
     component: MatchScoreView,
     meta:{
-      keepAlive: true
+      keepAlive: false
     }
   },
   {

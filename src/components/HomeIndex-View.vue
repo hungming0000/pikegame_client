@@ -45,6 +45,17 @@
             >
           </li>
           <li>
+            <a href="#/MatchScore">
+              <b-icon
+                pack="fas"
+                icon="star"
+                size="is-medium"
+                style="display: inline-block"
+              ></b-icon
+              >Live Score</a
+            >
+          </li>
+          <li>
             <a href="#/Login">
               <b-icon
                 pack="fas"
@@ -82,6 +93,15 @@ export default {
 </script>
   
 <style scoped>
+.homeindex-view{
+
+  background-image: url("../../src/assets/bg6.jpg");
+}
+.vertical-list{
+  background-color: rgba(28, 29, 23, 0.6);
+  border-radius: 6px;
+}
+
 .titlest {
   /* background-color: #87b4dec2; */
   color: white;
